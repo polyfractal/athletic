@@ -1,5 +1,5 @@
 {
-  "name": "Athletic/Athletic",
+  "name": "athletic/athletic",
   "description": "PHP Benchmarking Framework",
   "keywords": ["benchmark", "benchmarking", "profiling"],
   "type": "library",
