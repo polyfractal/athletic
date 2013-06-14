@@ -117,19 +117,31 @@ class Athletic
 
     private function formatResults($results)
     {
+        echo "\n";
         $results = array_filter($results);
 
         foreach ($results as $class => $result) {
-            echo "Event File: $class\n";
+            echo "$class\n";
 
-            echo "Method      Iterations      Average Time       Ops/second\n";
+            $longest = 0;
+            foreach ($result as $method => $stats) {
+                if (strlen($method) > $longest) {
+                    $longest = strlen($method);
+                }
+            }
+            echo '    '.str_pad('Method Name', $longest)."   Iterations      Average Time         Ops/second\n";
+
+            echo '    '.str_repeat('-', $longest)."  ------------    --------------       -------------\n";
+
             foreach($result as $method => $stats) {
 
+                $method = str_pad($method, $longest);
                 $iterations = str_pad($stats->iterations, 10);
                 $avg        = str_pad($stats->avg, 13);
                 $ops        = str_pad($stats->ops, 5);
-                echo "$method: [$iterations] [$avg] [$ops/s]\n";
+                echo "    $method: [$iterations] [$avg] [$ops/s]\n";
             }
+            echo "\n\n";
         }
     }
 }

@@ -17,6 +17,16 @@ abstract class AthleticEvent
 
     }
 
+    protected function classSetUp()
+    {
+
+    }
+
+    protected function classTearDown()
+    {
+
+    }
+
     protected function setUp()
     {
 
@@ -41,9 +51,9 @@ abstract class AthleticEvent
             $methodAnnotations[$methodReflector->getName()] = new Annotations($methodReflector);
         }
 
-        $this->setUp();
+        $this->classSetUp();
         $results = $this->runBenchmarks($methodAnnotations);
-        $this->tearDown();
+        $this->classTearDown();
 
         return $results;
     }
@@ -59,7 +69,9 @@ abstract class AthleticEvent
 
         foreach ($methods as $methodName => $annotations) {
             if (isset($annotations['iterations']) === true) {
+                $this->setUp();
                 $results[$methodName] = $this->runMethodBenchmark($methodName, $annotations['iterations']);
+                $this->tearDown();
             }
         }
         return $results;
