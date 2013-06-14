@@ -9,11 +9,15 @@ namespace Athletic;
 
 
 use Commando;
+use ReflectionClass;
 
 class Athletic
 {
     /** @var  Commando\Command() */
     private $cmdArgs;
+
+    /** @var array  */
+    private $declaredClasses = array();
 
     public function __construct()
     {
@@ -22,21 +26,111 @@ class Athletic
 
     public function run()
     {
-        echo $this->cmdArgs['path'];
+        $classesToBenchmark = $this->loadClassesFromPath($this->cmdArgs['path']);
+        $this->benchmark($classesToBenchmark);
+
+    }
+
+    private function benchmark($classes)
+    {
+        $results = array();
+        foreach ($classes as $class) {
+            $results[$class] = $this->benchmarkClass($class);
+        }
+
+        $this->formatResults($results);
+    }
+
+
+    /**
+     * @param $class
+     *
+     * @return array
+     */
+    private function benchmarkClass($class)
+    {
+        if ($this->isBenchmarkableClass($class) !== true) {
+            return array();
+        }
+
+        $object = new $class();
+        return $object->run();
+    }
+
+    private function isBenchmarkableClass($class)
+    {
+        $reflectionClass = new ReflectionClass($class);
+        return ($reflectionClass->isAbstract() !== true && $reflectionClass->isSubclassOf('\Athletic\AthleticEvent') === true);
     }
 
     private function initializeCmdArgs()
     {
         $this->cmdArgs = new Commando\Command();
         $this->setCmdArgs();
+        if ($this->cmdArgs['bootstrap'] !== null) {
+            require ($this->cmdArgs['bootstrap']);
+        }
     }
+
     private function setCmdArgs()
     {
         $this->cmdArgs->option('p')
+            ->require()
             ->aka('path')
             ->describedAs('Path to benchmark events.');
+
+        $this->cmdArgs->flag('b')
+                      ->aka('bootstrap')
+                      ->describedAs('Path to bootstrap file for your project');
+    }
+
+    private function loadClassesFromPath($path) {
+        $this->declaredClasses = get_declared_classes();
+        $files = $this->scanDirectory($path);
+
+        foreach ($files as $file) {
+            require_once("$path/$file");
+        }
+
+        $updatedClassList = get_declared_classes();
+
+        $newClasses = array_diff($updatedClassList,$this->declaredClasses);
+        return $newClasses;
+    }
+
+    private function scanDirectory($dir, $prefix = '') {
+        $dir = rtrim($dir, '\\/');
+        $result = array();
+
+        foreach (scandir($dir) as $f) {
+            if ($f !== '.' and $f !== '..') {
+                if (is_dir("$dir/$f")) {
+                    $result = array_merge($result, $this->scanDirectory("$dir/$f", "$prefix$f/"));
+                } else {
+                    $result[] = $prefix.$f;
+                }
+            }
+        }
+
+        return $result;
+    }
+
+    private function formatResults($results)
+    {
+        $results = array_filter($results);
+
+        foreach ($results as $class => $result) {
+            echo "Event File: $class\n";
+
+            echo "Method      Iterations      Average Time       Ops/second\n";
+            foreach($result as $method => $stats) {
+
+                $iterations = str_pad($stats->iterations, 10);
+                $avg        = str_pad($stats->avg, 13);
+                $ops        = str_pad($stats->ops, 5);
+                echo "$method: [$iterations] [$avg] [$ops/s]\n";
+            }
+        }
     }
 }
 
-$athletic = new Athletic();
-$athletic->run();
