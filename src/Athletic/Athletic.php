@@ -129,17 +129,17 @@ class Athletic
                     $longest = strlen($method);
                 }
             }
-            echo '    '.str_pad('Method Name', $longest)."   Iterations      Average Time         Ops/second\n";
+            echo '    '.str_pad('Method Name', $longest)."   Iterations    Average Time      Ops/second\n";
 
-            echo '    '.str_repeat('-', $longest)."  ------------    --------------       -------------\n";
+            echo '    '.str_repeat('-', $longest)."  ------------  --------------    -------------\n";
 
             foreach($result as $method => $stats) {
 
                 $method = str_pad($method, $longest);
-                $iterations = str_pad($stats->iterations, 10);
-                $avg        = str_pad($stats->avg, 13);
-                $ops        = str_pad($stats->ops, 5);
-                echo "    $method: [$iterations] [$avg] [$ops/s]\n";
+                $iterations = str_pad(number_format($stats->iterations), 10);
+                $avg        = str_pad(number_format($stats->avg,13), 13);
+                $ops        = str_pad(number_format($stats->ops,5), 7);
+                echo "    $method: [$iterations] [$avg] [$ops]\n";
             }
             echo "\n\n";
         }
