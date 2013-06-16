@@ -10,6 +10,10 @@ namespace Athletic;
 use ReflectionClass;
 use zpt\anno\Annotations;
 
+/**
+ * Class AthleticEvent
+ * @package Athletic
+ */
 abstract class AthleticEvent
 {
     public function __construct()
@@ -17,20 +21,24 @@ abstract class AthleticEvent
 
     }
 
+
     protected function classSetUp()
     {
 
     }
+
 
     protected function classTearDown()
     {
 
     }
 
+
     protected function setUp()
     {
 
     }
+
 
     protected function tearDown()
     {
@@ -43,7 +51,7 @@ abstract class AthleticEvent
      */
     public function run()
     {
-        $classReflector = new ReflectionClass(get_class($this));
+        $classReflector   = new ReflectionClass(get_class($this));
         $classAnnotations = new Annotations($classReflector);
 
         $methodAnnotations = array();
@@ -61,6 +69,7 @@ abstract class AthleticEvent
 
     /**
      * @param Annotations[] $methods
+     *
      * @return array
      */
     private function runBenchmarks($methods)
@@ -80,7 +89,8 @@ abstract class AthleticEvent
 
     /**
      * @param string $method
-     * @param int     $iterations
+     * @param int    $iterations
+     *
      * @return Results
      */
     private function runMethodBenchmark($method, $iterations)
@@ -98,6 +108,12 @@ abstract class AthleticEvent
 
     }
 
+
+    /**
+     * @param string $method
+     *
+     * @return mixed
+     */
     private function timeMethod($method)
     {
         $start = microtime(true);
@@ -105,15 +121,22 @@ abstract class AthleticEvent
         return microtime(true) - $start;
     }
 
+
+    /**
+     * @param int $iterations
+     *
+     * @return float
+     */
     private function getCalibrationTime($iterations)
     {
         $emptyCalibrationMethod = 'emptyCalibrationMethod';
-        $resultsCalibration = array();
+        $resultsCalibration     = array();
         for ($i = 0; $i < $iterations; ++$i) {
             $resultsCalibration[$i] = $this->timeMethod($emptyCalibrationMethod);
         }
         return array_sum($resultsCalibration) / count($resultsCalibration);
     }
+
 
     private function emptyCalibrationMethod()
     {

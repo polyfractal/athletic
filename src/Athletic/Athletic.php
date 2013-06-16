@@ -8,141 +8,106 @@
 namespace Athletic;
 
 
-use Commando;
-use ReflectionClass;
+use Athletic\Common\CmdLine;
+use Athletic\Discovery\RecursiveFileLoader;
+use Athletic\Runners\SuiteRunner;
+use Pimple;
 
-class Athletic
+/**
+ * Class Athletic
+ * @package Athletic
+ */
+class Athletic extends Pimple
 {
-    /** @var  Commando\Command() */
-    private $cmdArgs;
+    /** @var  CmdLine */
+    private $cmdLine;
 
-    /** @var array  */
-    private $declaredClasses = array();
 
     public function __construct()
     {
-        $this->initializeCmdArgs();
+        $this->buildDIC();
+        $this->getCmdLineArgs();
     }
+
 
     public function run()
     {
-        $classesToBenchmark = $this->loadClassesFromPath($this->cmdArgs['path']);
+        $classesToBenchmark = $this->getClassesToBenchmark();
         $this->benchmark($classesToBenchmark);
-
-    }
-
-    private function benchmark($classes)
-    {
-        $results = array();
-        foreach ($classes as $class) {
-            $results[$class] = $this->benchmarkClass($class);
-        }
-
-        $this->formatResults($results);
     }
 
 
     /**
-     * @param $class
-     *
-     * @return array
+     * @return \string[]
      */
-    private function benchmarkClass($class)
+    private function getClassesToBenchmark()
     {
-        if ($this->isBenchmarkableClass($class) !== true) {
-            return array();
-        }
+        /** @var RecursiveFileLoader $discovery */
+        $discovery = $this['discovery'];
+        $path      = $this->cmdLine->getSuitePath();
 
-        $object = new $class();
-        return $object->run();
+        return $discovery->getClasses($path);
+
     }
 
-    private function isBenchmarkableClass($class)
+
+    /**
+     * @param string[] $classes
+     */
+    private function benchmark($classes)
     {
-        $reflectionClass = new ReflectionClass($class);
-        return ($reflectionClass->isAbstract() !== true && $reflectionClass->isSubclassOf('\Athletic\AthleticEvent') === true);
+        /** @var SuiteRunner $suite */
+        $suite = $this['suiteRunner'];
+
+        $suite->runSuite($classes);
+        $suite->publishResults();
+
     }
 
-    private function initializeCmdArgs()
+
+    private function getCmdLineArgs()
     {
-        $this->cmdArgs = new Commando\Command();
-        $this->setCmdArgs();
-        if ($this->cmdArgs['bootstrap'] !== null) {
-            require ($this->cmdArgs['bootstrap']);
-        }
+        /** @var CmdLine $cmdLine */
+        $cmdLine = $this['cmdLine'];
+        $cmdLine->parseArgs();
+
+        $this->cmdLine = $cmdLine;
     }
 
-    private function setCmdArgs()
+
+    private function buildDIC()
     {
-        $this->cmdArgs->option('p')
-            ->require()
-            ->aka('path')
-            ->describedAs('Path to benchmark events.');
+        $this['cmdLine'] = function ($dic) {
+            return new CmdLine();
+        };
 
-        $this->cmdArgs->flag('b')
-                      ->aka('bootstrap')
-                      ->describedAs('Path to bootstrap file for your project');
+        $this['formatterClass'] = '\Athletic\Formatters\DefaultFormatter';
+        $this['formatter']      = function ($dic) {
+            return new $dic['formatterClass']();
+        };
+
+        $this['publisherClass'] = '\Athletic\Publishers\StdOutPublisher';
+        $this['publisher']      = function ($dic) {
+            return new $dic['publisherClass']($dic['formatter']);
+        };
+
+        $this['discoveryClass'] = '\Athletic\Discovery\RecursiveFileLoader';
+        $this['discovery']      = function ($dic) {
+            return new $dic['discoveryClass']();
+        };
+
+        $this['classRunnerClass'] = '\Athletic\Runners\ClassRunner';
+        $this['classRunner']      = function ($dic) {
+            return function ($class) use ($dic) {
+                return new $dic['classRunnerClass']($class);
+            };
+        };
+
+        $this['suiteRunnerClass'] = '\Athletic\Runners\SuiteRunner';
+        $this['suiteRunner']      = function ($dic) {
+            return new $dic['suiteRunnerClass']($dic['publisher'], $dic['classRunner']);
+        };
     }
 
-    private function loadClassesFromPath($path) {
-        $this->declaredClasses = get_declared_classes();
-        $files = $this->scanDirectory($path);
-
-        foreach ($files as $file) {
-            require_once("$path/$file");
-        }
-
-        $updatedClassList = get_declared_classes();
-
-        $newClasses = array_diff($updatedClassList,$this->declaredClasses);
-        return $newClasses;
-    }
-
-    private function scanDirectory($dir, $prefix = '') {
-        $dir = rtrim($dir, '\\/');
-        $result = array();
-
-        foreach (scandir($dir) as $f) {
-            if ($f !== '.' and $f !== '..') {
-                if (is_dir("$dir/$f")) {
-                    $result = array_merge($result, $this->scanDirectory("$dir/$f", "$prefix$f/"));
-                } else {
-                    $result[] = $prefix.$f;
-                }
-            }
-        }
-
-        return $result;
-    }
-
-    private function formatResults($results)
-    {
-        echo "\n";
-        $results = array_filter($results);
-
-        foreach ($results as $class => $result) {
-            echo "$class\n";
-
-            $longest = 0;
-            foreach ($result as $method => $stats) {
-                if (strlen($method) > $longest) {
-                    $longest = strlen($method);
-                }
-            }
-            echo '    '.str_pad('Method Name', $longest)."   Iterations    Average Time      Ops/second\n";
-
-            echo '    '.str_repeat('-', $longest)."  ------------  --------------    -------------\n";
-
-            foreach($result as $method => $stats) {
-
-                $method = str_pad($method, $longest);
-                $iterations = str_pad(number_format($stats->iterations), 10);
-                $avg        = str_pad(number_format($stats->avg,13), 13);
-                $ops        = str_pad(number_format($stats->ops,5), 7);
-                echo "    $method: [$iterations] [$avg] [$ops]\n";
-            }
-            echo "\n\n";
-        }
-    }
 }
 

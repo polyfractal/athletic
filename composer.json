@@ -12,7 +12,8 @@
   "require": {
     "php": ">=5.3.0",
     "zeptech/annotations": "1.1.0",
-    "nategood/commando": "0.2.1"
+    "nategood/commando": "0.2.1",
+    "pimple/pimple": "v1.0.2"
   },
   "require-dev": {
   },

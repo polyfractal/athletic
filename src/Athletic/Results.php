@@ -18,6 +18,7 @@ class Results
     public $min;
     public $ops;
 
+
     public function __construct($results, $iterations)
     {
         $this->results    = $results;
@@ -29,12 +30,13 @@ class Results
         $this->ops        = $iterations / $this->sum;
     }
 
+
     public function __toString()
     {
-        $ret = $this->avg.', ';
-        $ret .= $this->min.', ';
-        $ret .= $this->max.', ';
-        $ret .= $this->ops.', ';
+        $ret = $this->avg . ', ';
+        $ret .= $this->min . ', ';
+        $ret .= $this->max . ', ';
+        $ret .= $this->ops . ', ';
         return $ret;
     }
 }
