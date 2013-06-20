@@ -20,37 +20,25 @@ class RecursiveFileLoader
      */
     public function getClasses($path)
     {
-        return $this->loadClassesFromPath($path);
+        $files = $this->scanDirectory($path);
+        return $this->loadClasses($files);
+
     }
 
 
     /**
-     * @param string $path
-     *
+     * @param array $files
      * @return array
      */
-    private function loadClassesFromPath($path)
+    private function loadClasses($files)
     {
         $initialClasses = get_declared_classes();
-
-        $this->includeFiles($path);
-
-        $updatedClassList = get_declared_classes();
-        return array_diff($updatedClassList, $initialClasses);
-
-    }
-
-
-    /**
-     * @param string $path
-     */
-    private function includeFiles($path)
-    {
-        $files = $this->scanDirectory($path);
-
         foreach ($files as $file) {
-            include "$path/$file";
+            include $file;
         }
+        $updatedClassList = get_declared_classes();
+
+        return array_values(array_diff($updatedClassList, $initialClasses));
     }
 
 
@@ -70,7 +58,7 @@ class RecursiveFileLoader
                 if (is_dir("$dir/$f")) {
                     $result = array_merge($result, $this->scanDirectory("$dir/$f", "$prefix$f/"));
                 } else {
-                    $result[] = $prefix . $f;
+                    $result[] = $dir .'/' . $f;
                 }
             }
         }
