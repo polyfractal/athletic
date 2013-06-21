@@ -44,10 +44,7 @@ class Athletic extends Pimple
     {
         /** @var RecursiveFileLoader $discovery */
         $discovery = $this['discovery'];
-        $path      = $this->cmdLine->getSuitePath();
-
-        return $discovery->getClasses($path);
-
+        return $discovery->getClasses();
     }
 
 
@@ -67,18 +64,16 @@ class Athletic extends Pimple
 
     private function getCmdLineArgs()
     {
-        /** @var CmdLine $cmdLine */
-        $cmdLine = $this['cmdLine'];
-        $cmdLine->parseArgs();
-
-        $this->cmdLine = $cmdLine;
+        $this->cmdLine = $this['cmdLine'];
     }
 
 
     private function buildDIC()
     {
         $this['cmdLine'] = function ($dic) {
-            return new CmdLine();
+            $cmdLine =  new CmdLine();
+            $cmdLine->parseArgs();
+            return $cmdLine;
         };
 
         $this['formatterClass'] = '\Athletic\Formatters\DefaultFormatter';
@@ -93,7 +88,10 @@ class Athletic extends Pimple
 
         $this['discoveryClass'] = '\Athletic\Discovery\RecursiveFileLoader';
         $this['discovery']      = function ($dic) {
-            return new $dic['discoveryClass']();
+            /** @var CmdLine $cmdLine */
+            $cmdLine = $dic['cmdLine'];
+            $path = $cmdLine->getSuitePath();
+            return new $dic['discoveryClass']($path);
         };
 
         $this['classRunnerClass'] = '\Athletic\Runners\ClassRunner';
