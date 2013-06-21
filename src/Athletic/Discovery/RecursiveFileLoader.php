@@ -16,17 +16,20 @@ class RecursiveFileLoader
     /** @var array  */
     private $fqns = array();
 
+    /** @var  ParserFactory */
+    private $parserFactory;
 
     /**
-     * @param string $path
+     * @param ParserFactory $parserFactory
+     * @param string           $path
      */
-    public function __construct($path)
+    public function __construct(ParserFactory $parserFactory, $path)
     {
-        $files           = $this->scanDirectory($path);
-        $parsedPHPFiles  = $this->parsePHPFiles($files);
-        $athleticClasses = $this->getAthleticClasses($parsedPHPFiles);
+        $this->parserFactory = $parserFactory;
+        $files               = $this->scanDirectory($path);
+        $parsedPHPFiles      = $this->parsePHPFiles($files);
+        $athleticClasses     = $this->getAthleticClasses($parsedPHPFiles);
 
-        //$this->includeClasses($athleticClasses);
         $this->fqns = $this->getFQN($athleticClasses);
 
     }
@@ -49,7 +52,7 @@ class RecursiveFileLoader
     {
         $parsedPHP = array();
         foreach ($files as $file) {
-            $parsedPHP[] = new PHPParser($file);
+            $parsedPHP[] = $this->parserFactory->getParser($file);
         }
 
         return $parsedPHP;
@@ -57,16 +60,16 @@ class RecursiveFileLoader
 
 
     /**
-     * @param PHPParser[] $parsedPHPFiles
-     * @return PHPParser[]
+     * @param Parser[] $parsedPHPFiles
+     * @return Parser[]
      */
     private function getAthleticClasses($parsedPHPFiles)
     {
-        /** @var PHPParser[] $athleticClasses */
+        /** @var Parser[] $athleticClasses */
         $athleticClasses = array();
 
         foreach ($parsedPHPFiles as $class) {
-            /** @var PHPParser $class */
+            /** @var Parser $class */
             if ($class->isAthleticEvent() === true) {
                 $athleticClasses[] = $class;
             }
@@ -75,20 +78,8 @@ class RecursiveFileLoader
         return $athleticClasses;
     }
 
-
     /**
-     * @param PHPParser[] $classesToInclude
-     */
-    private function includeClasses($classesToInclude)
-    {
-        foreach ($classesToInclude as $class) {
-            require_once($class->getPath());
-        }
-    }
-
-
-    /**
-     * @param PHPParser[] $athleticClasses
+     * @param Parser[] $athleticClasses
      * @return array
      */
     private function getFQN($athleticClasses)

@@ -8,10 +8,10 @@
 namespace Athletic\Discovery;
 
 /**
- * Class PHPParser
+ * Class Parser
  * @package Athletic\Discovery
  */
-class PHPParser
+class Parser
 {
     private $className;
     private $parentClassName;

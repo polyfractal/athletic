@@ -105,6 +105,18 @@ class Athletic extends Pimple
         $this['suiteRunner']      = function ($dic) {
             return new $dic['suiteRunnerClass']($dic['publisher'], $dic['classRunner']);
         };
+
+        $this['parserClass'] = '\Athletic\Discovery\Parser';
+        $this['parser']      = function ($dic) {
+            return function ($path) use ($dic) {
+                return new $dic['parserClass']($path);
+            };
+        };
+
+        $this['parserFactoryClass'] = '\Athletic\Discovery\ParserFactory';
+        $this['parserFactory']      = function ($dic) {
+            return new $dic['parserFactoryClass']($dic['parser']);
+        };
     }
 
 }
