@@ -82,19 +82,19 @@ class RecursiveFileLoaderTest extends PHPUnit_Framework_TestCase
                        ->getMock();
 
         $mockParserFactory = m::mock('\Athletic\Discovery\ParserFactory')
-                             ->shouldReceive('getParser')
+                             ->shouldReceive('create')
                              ->once()
                              ->with('vfs://root/threeClasses/Package/Child1/Class1.php')
                              ->andReturn($mockParser1)
                              ->getMock();
 
-        $mockParserFactory->shouldReceive('getParser')
+        $mockParserFactory->shouldReceive('create')
                              ->once()
                              ->with('vfs://root/threeClasses/Package/Child2/Class2.php')
                              ->andReturn($mockParser2)
                              ->getMock();
 
-        $mockParserFactory->shouldReceive('getParser')
+        $mockParserFactory->shouldReceive('create')
                              ->once()
                              ->with('vfs://root/threeClasses/Package/Child2/Class3.php')
                              ->andReturn($mockParser3)
@@ -138,19 +138,19 @@ class RecursiveFileLoaderTest extends PHPUnit_Framework_TestCase
                        ->getMock();
 
         $mockParserFactory = m::mock('\Athletic\Discovery\ParserFactory')
-                             ->shouldReceive('getParser')
+                             ->shouldReceive('create')
                              ->once()
                              ->with('vfs://root/threeClasses/Package/Child1/Class1.php')
                              ->andReturn($mockParser)
                              ->getMock();
 
-        $mockParserFactory->shouldReceive('getParser')
+        $mockParserFactory->shouldReceive('create')
                             ->once()
                             ->with('vfs://root/threeClasses/Package/Child2/Class2.php')
                             ->andReturn($mockParser)
                             ->getMock();
 
-        $mockParserFactory->shouldReceive('getParser')
+        $mockParserFactory->shouldReceive('create')
                             ->once()
                             ->with('vfs://root/threeClasses/Package/Child2/Class3.php')
                             ->andReturn($mockParser)

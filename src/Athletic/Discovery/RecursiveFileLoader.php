@@ -52,7 +52,7 @@ class RecursiveFileLoader
     {
         $parsedPHP = array();
         foreach ($files as $file) {
-            $parsedPHP[] = $this->parserFactory->getParser($file);
+            $parsedPHP[] = $this->parserFactory->create($file);
         }
 
         return $parsedPHP;
