@@ -7,6 +7,7 @@
 
 namespace Athletic\Runners;
 
+use Athletic\AthleticEvent;
 use ReflectionClass;
 
 /**
@@ -35,6 +36,8 @@ class ClassRunner
         }
 
         $class = $this->class;
+
+        /** @var AthleticEvent $object */
         $object = new $class();
 
         return $object->run();
