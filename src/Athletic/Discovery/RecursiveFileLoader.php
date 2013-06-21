@@ -13,34 +13,93 @@ namespace Athletic\Discovery;
  */
 class RecursiveFileLoader
 {
+    /** @var array  */
+    private $fqns = array();
+
+
     /**
      * @param string $path
-     *
+     */
+    public function __construct($path)
+    {
+        $files           = $this->scanDirectory($path);
+        $parsedPHPFiles  = $this->parsePHPFiles($files);
+        $athleticClasses = $this->getAthleticClasses($parsedPHPFiles);
+
+        //$this->includeClasses($athleticClasses);
+        $this->fqns = $this->getFQN($athleticClasses);
+
+    }
+
+    /**
      * @return string[]
      */
-    public function getClasses($path)
+    public function getClasses()
     {
-        $files = $this->scanDirectory($path);
-        return $this->loadClasses($files);
-
+        return $this->fqns;
     }
 
 
     /**
      * @param array $files
+     *
      * @return array
      */
-    private function loadClasses($files)
+    private function parsePHPFiles($files)
     {
-        $initialClasses = get_declared_classes();
+        $parsedPHP = array();
         foreach ($files as $file) {
-            include $file;
+            $parsedPHP[] = new PHPParser($file);
         }
-        $updatedClassList = get_declared_classes();
 
-        return array_values(array_diff($updatedClassList, $initialClasses));
+        return $parsedPHP;
     }
 
+
+    /**
+     * @param PHPParser[] $parsedPHPFiles
+     * @return PHPParser[]
+     */
+    private function getAthleticClasses($parsedPHPFiles)
+    {
+        /** @var PHPParser[] $athleticClasses */
+        $athleticClasses = array();
+
+        foreach ($parsedPHPFiles as $class) {
+            /** @var PHPParser $class */
+            if ($class->isAthleticEvent() === true) {
+                $athleticClasses[] = $class;
+            }
+        }
+
+        return $athleticClasses;
+    }
+
+
+    /**
+     * @param PHPParser[] $classesToInclude
+     */
+    private function includeClasses($classesToInclude)
+    {
+        foreach ($classesToInclude as $class) {
+            require_once($class->getPath());
+        }
+    }
+
+
+    /**
+     * @param PHPParser[] $athleticClasses
+     * @return array
+     */
+    private function getFQN($athleticClasses)
+    {
+        $fqns = array();
+        foreach ($athleticClasses as $class) {
+            $fqns[] = $class->getFQN();
+        }
+
+        return $fqns;
+    }
 
     /**
      * @param string $dir
