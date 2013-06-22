@@ -9,6 +9,7 @@ namespace Athletic\Common;
 
 
 use Athletic\Athletic;
+use Commando\Command;
 
 class DICBuilder
 {
@@ -117,7 +118,11 @@ class DICBuilder
     {
 
         $this->athletic['cmdLine'] = function ($dic) {
-            return new CmdLine();
+            return new CmdLine($dic['command']);
+        };
+
+        $this->athletic['command'] = function ($dic) {
+            return new Command();
         };
     }
 

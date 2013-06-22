@@ -20,9 +20,9 @@ class CmdLine
     private $cmdArgs;
 
 
-    public function __construct()
+    public function __construct(Command $command)
     {
-        $cmdArgs = new Command();
+        $cmdArgs = $command;
         $this->setCmdArgs($cmdArgs);
 
         if ($cmdArgs['bootstrap'] !== null) {
