@@ -7,6 +7,8 @@
 
 namespace Athletic\Discovery;
 
+use Athletic\Factories\ParserFactory;
+
 /**
  * Class RecursiveFileLoader
  * @package Athletic\Discovery

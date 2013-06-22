@@ -7,7 +7,10 @@
 
 namespace Athletic\Runners;
 
+use Athletic\Factories\ClassResultsFactory;
+use Athletic\Factories\ClassRunnerFactory;
 use Athletic\Publishers\PublisherInterface;
+use Athletic\Results\ClassResults;
 
 /**
  * Class SuiteRunner
@@ -18,21 +21,30 @@ class SuiteRunner
     /** @var PublisherInterface */
     private $publisher;
 
-    /** @var  callback */
-    private $classRunner;
+    /** @var  ClassRunnerFactory */
+    private $classRunnerFactory;
 
-    /** @var  array */
+    /** @var  ClassResults[] */
     private $results;
+
+    /** @var  ClassResultsFactory */
+    private $classResultsFactory;
 
 
     /**
-     * @param PublisherInterface $publisher
-     * @param                    $classRunner
+     * @param PublisherInterface  $publisher
+     * @param ClassResultsFactory $classResultsFactory
+     * @param ClassRunnerFactory  $classRunnerFactory
+     *
      */
-    public function __construct(PublisherInterface $publisher, $classRunner)
-    {
-        $this->publisher   = $publisher;
-        $this->classRunner = $classRunner;
+    public function __construct(
+        PublisherInterface $publisher,
+        ClassResultsFactory $classResultsFactory,
+        ClassRunnerFactory $classRunnerFactory
+    ) {
+        $this->publisher           = $publisher;
+        $this->classRunnerFactory  = $classRunnerFactory;
+        $this->classResultsFactory = $classResultsFactory;
     }
 
 
@@ -44,7 +56,7 @@ class SuiteRunner
         $results = array();
 
         foreach ($classesToRun as $class) {
-            $results[$class] = $this->runClass($class);
+            $results[] = $this->runClass($class);
         }
 
         $this->results = $results;
@@ -54,15 +66,14 @@ class SuiteRunner
     /**
      * @param string $class
      *
-     * @return array
+     * @return ClassResults
      */
     public function runClass($class)
     {
-        $classRunnerBuider = $this->classRunner;
+        $classRunner = $this->classRunnerFactory->create($class);
+        $methodResults = $classRunner->run();
 
-        /** @var ClassRunner $classRunner */
-        $classRunner = $classRunnerBuider($class);
-        return $classRunner->run();
+        return $this->classResultsFactory->create($class, $methodResults);
 
     }
 

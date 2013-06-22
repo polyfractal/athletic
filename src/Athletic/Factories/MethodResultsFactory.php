@@ -5,21 +5,23 @@
  * Time: 3:11 PM
  */
 
-namespace Athletic\Results;
+namespace Athletic\Factories;
 
 
-class MethodResultsFactory
+use Athletic\Factories\AbstractFactory;
+use Athletic\Results\MethodResults;
+
+class MethodResultsFactory extends AbstractFactory
 {
-    private $methodFactory;
-
-    public function __construct($methodFactory)
+    /**
+     * @param       $name
+     * @param array $results
+     * @param int   $iterations
+     *
+     * @return MethodResults
+     */
+    public function create($name, $results, $iterations)
     {
-        $this->methodFactory;
-    }
-
-    public function getMethodResults()
-    {
-        $method =  $this->methodFactory;
-
+        return $this->container['methodResults']($name, $results, $iterations);
     }
 }

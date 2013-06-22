@@ -7,6 +7,8 @@
 
 namespace Athletic;
 
+use Athletic\Factories\MethodResultsFactory;
+use Athletic\Results\MethodResults;
 use ReflectionClass;
 use zpt\anno\Annotations;
 
@@ -16,6 +18,9 @@ use zpt\anno\Annotations;
  */
 abstract class AthleticEvent
 {
+    /** @var  MethodResultsFactory */
+    private $methodResultsFactory;
+
     public function __construct()
     {
 
@@ -47,7 +52,15 @@ abstract class AthleticEvent
 
 
     /**
-     * @return array
+     * @param MethodResultsFactory $methodResultsFactory
+     */
+    public function setMethodFactory($methodResultsFactory)
+    {
+        $this->methodResultsFactory = $methodResultsFactory;
+    }
+
+    /**
+     * @return MethodResults[]
      */
     public function run()
     {
@@ -70,7 +83,7 @@ abstract class AthleticEvent
     /**
      * @param Annotations[] $methods
      *
-     * @return array
+     * @return MethodResults[]
      */
     private function runBenchmarks($methods)
     {
@@ -79,7 +92,7 @@ abstract class AthleticEvent
         foreach ($methods as $methodName => $annotations) {
             if (isset($annotations['iterations']) === true) {
                 $this->setUp();
-                $results[$methodName] = $this->runMethodBenchmark($methodName, $annotations['iterations']);
+                $results[] = $this->runMethodBenchmark($methodName, $annotations['iterations']);
                 $this->tearDown();
             }
         }
@@ -91,7 +104,7 @@ abstract class AthleticEvent
      * @param string $method
      * @param int    $iterations
      *
-     * @return Results
+     * @return MethodResults
      */
     private function runMethodBenchmark($method, $iterations)
     {
@@ -102,9 +115,7 @@ abstract class AthleticEvent
             $results[$i] = $this->timeMethod($method) - $avgCalibration;
         }
 
-        $ret = new Results($results, $iterations);
-
-        return $ret;
+        return $this->methodResultsFactory->create($method, $results, $iterations);
 
     }
 

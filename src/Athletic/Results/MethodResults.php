@@ -5,11 +5,15 @@
  * Time: 2:02 PM
  */
 
-namespace Athletic;
+namespace Athletic\Results;
 
-
-class Results
+/**
+ * Class Results
+ * @package Athletic
+ */
+class MethodResults
 {
+    public $methodName;
     public $results;
     public $iterations;
     public $sum;
@@ -19,8 +23,9 @@ class Results
     public $ops;
 
 
-    public function __construct($results, $iterations)
+    public function __construct($name, $results, $iterations)
     {
+        $this->methodName = $name;
         $this->results    = $results;
         $this->iterations = $iterations;
         $this->sum        = array_sum($results);

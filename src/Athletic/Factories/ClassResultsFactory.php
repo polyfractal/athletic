@@ -5,9 +5,14 @@
  * Time: 3:11 PM
  */
 
-namespace Athletic\Results;
+namespace Athletic\Factories;
 
+use Athletic\Factories\AbstractFactory;
 
-class ClassResultsFactory {
-
+class ClassResultsFactory extends AbstractFactory
+{
+    public function create($name, $results)
+    {
+        return $this->container['classResults']($name, $results);
+    }
 }

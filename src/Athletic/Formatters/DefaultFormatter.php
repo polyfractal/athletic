@@ -7,6 +7,10 @@
 
 namespace Athletic\Formatters;
 
+use Athletic\Results;
+use Athletic\Results\ClassResults;
+use Athletic\Results\MethodResults;
+
 /**
  * Class DefaultFormatter
  * @package Athletic\Formatters
@@ -14,22 +18,23 @@ namespace Athletic\Formatters;
 class DefaultFormatter implements FormatterInterface
 {
     /**
-     * @param array $results
+     * @param ClassResults[] $results
      *
      * @return string
      */
     public function getFormattedResults($results)
     {
         $returnString = "\n";
-        $results      = array_filter($results);
 
-        foreach ($results as $class => $result) {
-            $returnString .= "$class\n";
+
+        foreach ($results as $result) {
+            $returnString .= $result->getClassName()."\n";
 
             $longest = 0;
-            foreach ($result as $method => $stats) {
-                if (strlen($method) > $longest) {
-                    $longest = strlen($method);
+            /** @var MethodResults $methodResult */
+            foreach ($result as $methodResult) {
+                if (strlen($methodResult->methodName) > $longest) {
+                    $longest = strlen($methodResult->methodName);
                 }
             }
             $returnString .= '    ' . str_pad(
@@ -39,12 +44,12 @@ class DefaultFormatter implements FormatterInterface
 
             $returnString .= '    ' . str_repeat('-', $longest) . "  ------------  --------------    -------------\n";
 
-            foreach ($result as $method => $stats) {
+            foreach ($result as $methodResult) {
 
-                $method = str_pad($method, $longest);
-                $iterations = str_pad(number_format($stats->iterations), 10);
-                $avg = str_pad(number_format($stats->avg, 13), 13);
-                $ops = str_pad(number_format($stats->ops, 5), 7);
+                $method = str_pad($methodResult->methodName, $longest);
+                $iterations = str_pad(number_format($methodResult->iterations), 10);
+                $avg = str_pad(number_format($methodResult->avg, 13), 13);
+                $ops = str_pad(number_format($methodResult->ops, 5), 7);
                 $returnString .= "    $method: [$iterations] [$avg] [$ops]\n";
             }
             $returnString .= "\n\n";

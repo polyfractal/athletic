@@ -8,6 +8,9 @@
 namespace Athletic\Runners;
 
 use Athletic\AthleticEvent;
+use Athletic\Factories\MethodResultsFactory;
+use Athletic\Results\ClassResults;
+use Athletic\Results\MethodResults;
 use ReflectionClass;
 
 /**
@@ -19,16 +22,27 @@ class ClassRunner
     /** @var  string */
     private $class;
 
+    /** @var  MethodResultsFactory */
+    private $methodResultsFactory;
+
+    /** @var ClassResults  */
+    private $classResults;
+
 
     /**
-     * @param string $class
+     * @param MethodResultsFactory $methodResultsFactory
+     * @param string               $class
      */
-    public function __construct($class)
+    public function __construct(MethodResultsFactory $methodResultsFactory, $class)
     {
         $this->class = $class;
+        $this->methodResultsFactory = $methodResultsFactory;
     }
 
 
+    /**
+     * @return MethodResults
+     */
     public function run()
     {
         if ($this->isBenchmarkableClass() !== true) {
@@ -40,6 +54,7 @@ class ClassRunner
         /** @var AthleticEvent $object */
         $object = new $class();
 
+        $object->setMethodFactory($this->methodResultsFactory);
         return $object->run();
     }
 

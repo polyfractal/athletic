@@ -81,7 +81,7 @@ class RecursiveFileLoaderTest extends PHPUnit_Framework_TestCase
                        ->andReturn('Vendor\Package\Child2\Class3')
                        ->getMock();
 
-        $mockParserFactory = m::mock('\Athletic\Discovery\ParserFactory')
+        $mockParserFactory = m::mock('\Athletic\Factories\ParserFactory')
                              ->shouldReceive('create')
                              ->once()
                              ->with('vfs://root/threeClasses/Package/Child1/Class1.php')
@@ -137,7 +137,7 @@ class RecursiveFileLoaderTest extends PHPUnit_Framework_TestCase
                        ->andReturn(false)
                        ->getMock();
 
-        $mockParserFactory = m::mock('\Athletic\Discovery\ParserFactory')
+        $mockParserFactory = m::mock('\Athletic\Factories\ParserFactory')
                              ->shouldReceive('create')
                              ->once()
                              ->with('vfs://root/threeClasses/Package/Child1/Class1.php')

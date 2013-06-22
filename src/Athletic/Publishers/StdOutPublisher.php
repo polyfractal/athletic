@@ -8,6 +8,7 @@
 namespace Athletic\Publishers;
 
 use Athletic\Formatters\FormatterInterface;
+use Athletic\Results\ClassResults;
 
 /**
  * Class StdOutPublisher
@@ -29,7 +30,7 @@ class StdOutPublisher implements PublisherInterface
 
 
     /**
-     * @param array $results
+     * @param ClassResults[] $results
      *
      * @return void
      */

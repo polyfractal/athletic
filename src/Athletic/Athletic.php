@@ -9,6 +9,7 @@ namespace Athletic;
 
 
 use Athletic\Common\CmdLine;
+use Athletic\Common\DICBuilder;
 use Athletic\Discovery\RecursiveFileLoader;
 use Athletic\Runners\SuiteRunner;
 use Pimple;
@@ -22,10 +23,14 @@ class Athletic extends Pimple
     /** @var  CmdLine */
     private $cmdLine;
 
+    /** @var  DICBuilder */
+    private $dicBuilder;
+
 
     public function __construct()
     {
-        $this->buildDIC();
+        $this->dicBuilder = new DICBuilder($this);
+        $this->dicBuilder->buildDependencyGraph();
         $this->getCmdLineArgs();
     }
 
@@ -67,57 +72,6 @@ class Athletic extends Pimple
         $this->cmdLine = $this['cmdLine'];
     }
 
-
-    private function buildDIC()
-    {
-        $this['cmdLine'] = function ($dic) {
-            $cmdLine =  new CmdLine();
-            $cmdLine->parseArgs();
-            return $cmdLine;
-        };
-
-        $this['formatterClass'] = '\Athletic\Formatters\DefaultFormatter';
-        $this['formatter']      = function ($dic) {
-            return new $dic['formatterClass']();
-        };
-
-        $this['publisherClass'] = '\Athletic\Publishers\StdOutPublisher';
-        $this['publisher']      = function ($dic) {
-            return new $dic['publisherClass']($dic['formatter']);
-        };
-
-        $this['discoveryClass'] = '\Athletic\Discovery\RecursiveFileLoader';
-        $this['discovery']      = function ($dic) {
-            /** @var CmdLine $cmdLine */
-            $cmdLine = $dic['cmdLine'];
-            $path = $cmdLine->getSuitePath();
-            return new $dic['discoveryClass']($path);
-        };
-
-        $this['classRunnerClass'] = '\Athletic\Runners\ClassRunner';
-        $this['classRunner']      = function ($dic) {
-            return function ($class) use ($dic) {
-                return new $dic['classRunnerClass']($class);
-            };
-        };
-
-        $this['suiteRunnerClass'] = '\Athletic\Runners\SuiteRunner';
-        $this['suiteRunner']      = function ($dic) {
-            return new $dic['suiteRunnerClass']($dic['publisher'], $dic['classRunner']);
-        };
-
-        $this['parserClass'] = '\Athletic\Discovery\Parser';
-        $this['parser']      = function ($dic) {
-            return function ($path) use ($dic) {
-                return new $dic['parserClass']($path);
-            };
-        };
-
-        $this['parserFactoryClass'] = '\Athletic\Discovery\ParserFactory';
-        $this['parserFactory']      = function ($dic) {
-            return new $dic['parserFactoryClass']($dic['parser']);
-        };
-    }
 
 }
 

@@ -5,8 +5,9 @@
  * Time: 11:15 AM
  */
 
-namespace Athletic\Discovery;
+namespace Athletic\Factories;
 
+use Athletic\Discovery\Parser;
 use Athletic\Factories\AbstractFactory;
 
 /**
