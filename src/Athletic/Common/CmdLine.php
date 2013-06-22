@@ -20,13 +20,13 @@ class CmdLine
     private $cmdArgs;
 
 
-    public function parseArgs()
+    public function __construct()
     {
         $cmdArgs = new Command();
         $this->setCmdArgs($cmdArgs);
 
         if ($cmdArgs['bootstrap'] !== null) {
-            require($cmdArgs['bootstrap']);
+            require_once($cmdArgs['bootstrap']);
         }
 
         $this->cmdArgs = $cmdArgs;

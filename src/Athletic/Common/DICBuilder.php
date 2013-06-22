@@ -117,9 +117,7 @@ class DICBuilder
     {
 
         $this->athletic['cmdLine'] = function ($dic) {
-            $cmdLine =  new CmdLine();
-            $cmdLine->parseArgs();
-            return $cmdLine;
+            return new CmdLine();
         };
     }
 
