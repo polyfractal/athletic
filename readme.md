@@ -95,13 +95,17 @@ namespace Vendor\Package\Benchmarks\Indexing;
 use Vendor\Package\Indexing;
 use Athletic\AthleticEvent;
 ```
-> First, we have a PHP file that is included in your project's repo, just like unit tests.  In this example, the Event is saved under the `Vendor\Package\Benchmarks\Indexing` namespace.  It uses classes from your project located at `Vendor\Package\Indexing`.  It also uses a class from the Athletic framework.
+First, we have a PHP file that is included in your project's repo, just like unit tests.  In this example, the Event is saved under the `Vendor\Package\Benchmarks\Indexing` namespace.  It uses classes from your project located at `Vendor\Package\Indexing`.  It also uses a class from the Athletic framework.
+
+
 
 ```php
 class IndexingEvent extends AthleticEvent
 {
 ```
 Next, we declare an indexing class that extends \Athletic\AthleticEvent.  This is important because it tells Athletic that this class should be benchmarked.  AthleticEvent is an abstract class that provides code to inspect your  class and actually run the benchmarks.
+
+
 
 ```php
     private $fast;
@@ -115,7 +119,9 @@ Next, we declare an indexing class that extends \Athletic\AthleticEvent.  This i
         $this->data = array('field' => 'value');
     }
 ```
-> Next, we have some private variables and a setUp() method.  The `setUp()` method is invoked once at the beginning of each benchmark iteration.  This is a good place to instantiate variables that are important to the benchmark itself, populate data, build database connections, etc.  In this example, we are building two "Indexing" classes and a sample piece of data.  *(More details about setup and tear down are further down in this document)*
+Next, we have some private variables and a setUp() method.  The `setUp()` method is invoked once at the beginning of each benchmark iteration.  This is a good place to instantiate variables that are important to the benchmark itself, populate data, build database connections, etc.  In this example, we are building two "Indexing" classes and a sample piece of data.  *(More details about setup and tear down are further down in this document)*
+
+
 
 ```php
     /**
@@ -135,7 +141,7 @@ Next, we declare an indexing class that extends \Athletic\AthleticEvent.  This i
         $this->slow->index($this->data);
     }
 ```
-> Finally, we get to the meat of the benchmark.  Here we have two methods that are annotated with `@iterations` in the docblock.  The `@iterations` annotation tells Athletic how many times to repeat the method.  If a method does not have an iterations annotation, it will not be benchmarked.
+Finally, we get to the meat of the benchmark.  Here we have two methods that are annotated with `@iterations` in the docblock.  The `@iterations` annotation tells Athletic how many times to repeat the method.  If a method does not have an iterations annotation, it will not be benchmarked.
 
 That's it!  Now you are ready to run the benchmark.
 
@@ -149,10 +155,10 @@ php ./Athletic/bootstrap.php -p /home/ProjectDir/benchmarks/ -b /home/ProjectDir
 The tool has a few options that can be set:
 
 | Option | Long Form | Required | Description |
-|-|-|-|-|
-| -p | --path      |Yes| Specifies the path to the Events to benchmark.  Will recursively load all files/classes that extend `AthleticEvent`  |
-| -b | --bootstrap || Sets the path to an optional bootstrap file which is included before anything else is done.  This is often used to include an autoloader. |
-| -h | --help      || Help screen with options and their descriptions |
+| ------ | --------- | -------- | ----------- |
+| -p | --path      | Yes | Specifies the path to the Events to benchmark.  Will recursively load all files/classes that extend `AthleticEvent`  |
+| -b | --bootstrap | | Sets the path to an optional bootstrap file which is included before anything else is done.  This is often used to include an autoloader. |
+| -h | --help      | | Help screen with options and their descriptions |
 
 **Note:** Athletic is intended to be used as a single PHAR archive, but that process has not been built yet.  Soon!
 
@@ -178,8 +184,8 @@ The default formatter outputs the Event class name, each method name, the number
 
 Athletic offers several methods to setup and tear down data/variables.
 
-| Method | Description|
-|-|-|
+| Method | Description |
+| ------ | ----------- |
 | classSetUp() | Invoked at the beginning of the Event before anything else has ocurred |
 | setUp() | Invoked once before each iteration of the method being benchmark.|
 | classTearDown() | Invoked at the end of the event after everything else has ocurred.|
