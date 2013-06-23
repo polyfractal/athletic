@@ -38,7 +38,7 @@ class Athletic extends Pimple
 
 
     /**
-     * @return \string[]
+     * @return string[]
      */
     private function getClassesToBenchmark()
     {
