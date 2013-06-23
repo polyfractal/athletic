@@ -6,5 +6,9 @@ php:
 
 before_script:
   - composer install --dev
+  - mkdir -p build/logs
 
-script: phpunit --bootstrap tests/bootstrap.php --no-configuration tests
+script: phpunit --bootstrap tests/bootstrap.php --no-configuration --coverage-clover build/logs/clover.xml tests
+
+after_script:
+ - php vendor/bin/coveralls -v

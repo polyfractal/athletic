@@ -18,7 +18,8 @@
   "require-dev": {
     "phpunit/phpunit": "3.7.*",
     "mikey179/vfsStream": "1.3.*@dev",
-    "mockery/mockery": "dev-master@dev"
+    "mockery/mockery": "dev-master@dev",
+    "satooshi/php-coveralls": "dev-master"
   },
   "autoload": {
     "psr-0": {
