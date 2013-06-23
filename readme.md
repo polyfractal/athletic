@@ -145,7 +145,7 @@ Finally, we get to the meat of the benchmark.  Here we have two methods that are
 
 That's it!  Now you are ready to run the benchmark.
 
-### Running Athletic
+## Running Athletic
 A benchmark test is run from the command line:
 
 ```
@@ -162,7 +162,7 @@ The tool has a few options that can be set:
 
 **Note:** Athletic is intended to be used as a single PHAR archive, but that process has not been built yet.  Soon!
 
-### Benchmark Output
+### Output
 
 So what does the output of a benchmark look like?
 
