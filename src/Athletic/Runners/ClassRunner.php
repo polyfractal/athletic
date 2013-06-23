@@ -41,7 +41,7 @@ class ClassRunner
 
 
     /**
-     * @return MethodResults
+     * @return MethodResults[]
      */
     public function run()
     {
