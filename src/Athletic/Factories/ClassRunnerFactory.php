@@ -10,6 +10,10 @@ namespace Athletic\Factories;
 use Athletic\Factories\AbstractFactory;
 use Athletic\Runners\ClassRunner;
 
+/**
+ * Class ClassRunnerFactory
+ * @package Athletic\Factories
+ */
 class ClassRunnerFactory extends AbstractFactory
 {
     /**

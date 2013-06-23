@@ -10,6 +10,10 @@ namespace Athletic\Factories;
 
 use Pimple;
 
+/**
+ * Class AbstractFactory
+ * @package Athletic\Factories
+ */
 abstract class AbstractFactory
 {
     /** @var  Pimple */

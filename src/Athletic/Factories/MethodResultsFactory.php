@@ -11,6 +11,10 @@ namespace Athletic\Factories;
 use Athletic\Factories\AbstractFactory;
 use Athletic\Results\MethodResults;
 
+/**
+ * Class MethodResultsFactory
+ * @package Athletic\Factories
+ */
 class MethodResultsFactory extends AbstractFactory
 {
     /**

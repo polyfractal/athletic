@@ -11,12 +11,19 @@ namespace Athletic\Common;
 use Athletic\Athletic;
 use Commando\Command;
 
+/**
+ * Class DICBuilder
+ * @package Athletic\Common
+ */
 class DICBuilder
 {
     /** @var  Athletic */
     private $athletic;
 
 
+    /**
+     * @param Athletic $athletic
+     */
     public function __construct($athletic)
     {
         $this->athletic = $athletic;

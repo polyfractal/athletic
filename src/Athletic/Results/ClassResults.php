@@ -11,6 +11,10 @@ namespace Athletic\Results;
 use ArrayIterator;
 use IteratorAggregate;
 
+/**
+ * Class ClassResults
+ * @package Athletic\Results
+ */
 class ClassResults implements IteratorAggregate
 {
     /** @var  string */

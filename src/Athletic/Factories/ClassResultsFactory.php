@@ -9,6 +9,10 @@ namespace Athletic\Factories;
 
 use Athletic\Factories\AbstractFactory;
 
+/**
+ * Class ClassResultsFactory
+ * @package Athletic\Factories
+ */
 class ClassResultsFactory extends AbstractFactory
 {
     public function create($name, $results)
