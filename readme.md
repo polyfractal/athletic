@@ -148,8 +148,8 @@ That's it!  Now you are ready to run the benchmark.
 ## Running Athletic
 A benchmark test is run from the command line:
 
-```
-php ./Athletic/bootstrap.php -p /home/ProjectDir/benchmarks/ -b /home/ProjectDir/vendor/autoload.php
+```bash
+$ php ./Athletic/bootstrap.php -p /home/ProjectDir/benchmarks/ -b /home/ProjectDir/vendor/autoload.php
 ```
 
 The tool has a few options that can be set:
