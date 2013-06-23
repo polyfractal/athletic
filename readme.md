@@ -152,15 +152,15 @@ A benchmark test is run from the command line:
 $ php ./Athletic/bootstrap.php -p /home/ProjectDir/benchmarks/ -b /home/ProjectDir/vendor/autoload.php
 ```
 
-The tool has a few options that can be set:
+The tool has a few flags that can be set:
 
-| Option | Long Form | Required | Description |
+| Flag | Long Form | Required | Description |
 | ------ | --------- | -------- | ----------- |
 | -p | --path      | Yes | Specifies the path to the Events to benchmark.  Will recursively load all files/classes that extend `AthleticEvent`  |
-| -b | --bootstrap | | Sets the path to an optional bootstrap file which is included before anything else is done.  This is often used to include an autoloader. |
+| -b | --bootstrap | | Sets the path to an optional bootstrap file which is included before anything else.  This is often used to include an autoloader for your project. |
 | -h | --help      | | Help screen with options and their descriptions |
 
-**Note:** Athletic is intended to be used as a single PHAR archive, but that process has not been built yet.  Soon!
+**Note:** Athletic is intended to be used as a single Phar archive, but that process has not been built yet.  Soon!
 
 ### Output
 
