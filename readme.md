@@ -31,8 +31,8 @@ You can easily install Athletic through [Composer](http://getcomposer.org) in tw
 # Install Composer
 curl -sS https://getcomposer.org/installer | php
 
-# Add Athletic as a dependency
-php composer.phar require athletic/athletic:~0.1
+# Add Athletic as a dev dependency
+php composer.phar require athletic/athletic:~0.1 --dev
 ```
 
 You can find out more on how to install Composer, configure autoloading, and other best-practices for defining dependencies at [getcomposer.org](http://getcomposer.org).
