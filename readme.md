@@ -54,9 +54,7 @@ use Athletic\AthleticEvent;
 class IndexingEvent extends AthleticEvent
 {
     private $fast;
-
     private $slow;
-
     private $data;
 
     public function setUp()
@@ -97,7 +95,7 @@ namespace Vendor\Package\Benchmarks\Indexing;
 use Vendor\Package\Indexing;
 use Athletic\AthleticEvent;
 ```
-First, we have a PHP file that is included in your project's repo, just like unit tests.  In this example, the Event is saved under the `Vendor\Package\Benchmarks\Indexing` namespace.  It uses classes from your project located at `Vendor\Package\Indexing`.  It also uses a class from the Athletic framework.
+> First, we have a PHP file that is included in your project's repo, just like unit tests.  In this example, the Event is saved under the `Vendor\Package\Benchmarks\Indexing` namespace.  It uses classes from your project located at `Vendor\Package\Indexing`.  It also uses a class from the Athletic framework.
 
 ```php
 class IndexingEvent extends AthleticEvent
@@ -107,9 +105,7 @@ Next, we declare an indexing class that extends \Athletic\AthleticEvent.  This i
 
 ```php
     private $fast;
-
     private $slow;
-
     private $data;
 
     public function setUp()
@@ -119,7 +115,7 @@ Next, we declare an indexing class that extends \Athletic\AthleticEvent.  This i
         $this->data = array('field' => 'value');
     }
 ```
-Next, we have some private variables and a setUp() method.  The `setUp()` method is invoked once at the beginning of each benchmark iteration.  This is a good place to instantiate variables that are important to the benchmark itself, populate data, build database connections, etc.  In this example, we are building two "Indexing" classes and a sample piece of data.  *(More details about setup and tear down are further down in this document)*
+> Next, we have some private variables and a setUp() method.  The `setUp()` method is invoked once at the beginning of each benchmark iteration.  This is a good place to instantiate variables that are important to the benchmark itself, populate data, build database connections, etc.  In this example, we are building two "Indexing" classes and a sample piece of data.  *(More details about setup and tear down are further down in this document)*
 
 ```php
     /**
@@ -139,7 +135,7 @@ Next, we have some private variables and a setUp() method.  The `setUp()` method
         $this->slow->index($this->data);
     }
 ```
-Finally, we get to the meat of the benchmark.  Here we have two methods that are annotated with `@iterations` in the docblock.  The `@iterations` annotation tells Athletic how many times to repeat the method.  If a method does not have an iterations annotation, it will not be benchmarked.
+> Finally, we get to the meat of the benchmark.  Here we have two methods that are annotated with `@iterations` in the docblock.  The `@iterations` annotation tells Athletic how many times to repeat the method.  If a method does not have an iterations annotation, it will not be benchmarked.
 
 That's it!  Now you are ready to run the benchmark.
 
