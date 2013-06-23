@@ -7,4 +7,4 @@ php:
 before_script:
   - composer install --dev
 
-script: phpunit --bootstrap ./athletic/tests/bootstrap.php --no-configuration .//athletic/tests
+script: phpunit --bootstrap tests/bootstrap.php --no-configuration tests
