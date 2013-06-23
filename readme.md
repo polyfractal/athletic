@@ -4,7 +4,7 @@ Athletic is a benchmarking framework.  It allows developers to benchmark their c
 Athletic was inspired by the annotation format that PHPUnit uses.  Benchmark tests extend the `AthleticEvent` class and are annotated with specific docblock parameters.  The benchmark suite is then run with the Athletic command-line tool.
 
 | Branch | Unit Tests | Coverage |
-| -- | -- | -- |
+| ------ | ---------- | -------- |
 | [![Latest Stable Version](https://poser.pugx.org/athletic/athletic/v/stable.png)](https://packagist.org/packages/athletic/athletic) | [![Build Status](https://travis-ci.org/polyfractal/athletic.png?branch=master)](https://travis-ci.org/polyfractal/athletic) | [![Coverage Status](https://coveralls.io/repos/polyfractal/athletic/badge.png?branch=master)](https://coveralls.io/r/polyfractal/athletic?branch=master)|
 
 ### Why Benchmark?
