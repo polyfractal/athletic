@@ -20,9 +20,6 @@ use Pimple;
  */
 class Athletic extends Pimple
 {
-    /** @var  CmdLine */
-    private $cmdLine;
-
     /** @var  DICBuilder */
     private $dicBuilder;
 
@@ -31,7 +28,6 @@ class Athletic extends Pimple
     {
         $this->dicBuilder = new DICBuilder($this);
         $this->dicBuilder->buildDependencyGraph();
-        $this->getCmdLineArgs();
     }
 
 
@@ -65,13 +61,5 @@ class Athletic extends Pimple
         $suite->publishResults();
 
     }
-
-
-    private function getCmdLineArgs()
-    {
-        $this->cmdLine = $this['cmdLine'];
-    }
-
-
 }
 
