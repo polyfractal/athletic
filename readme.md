@@ -1,71 +1,45 @@
-Athletic
-========
+# Athletic
+Athletic is a benchmarking framework.  It allows developers to benchmark their code without littering microtime() calls everywhere.
 
-Athletic is a benchmarking framework.  It allows developers to easily create benchmarks of their code without littering microtime() calls everywhere.
+Athletic was inspired by the annotation format that PHPUnit uses.  Benchmark tests extend the `AthleticEvent` class and are annotated with specific docblock parameters.  The benchmark suite is then run with the Athletic command-line tool.
 
-Athletic was inspired by the annotation format that PHPUnit uses.  Special benchmark tests are created which extend the `AthleticEvent` class.  Benchmark functions are then annotated appropriately and run with the Athletic command-line tool.
+### Why Benchmark?
+Because fast code is good!  While *premature* optimization is certainly evil, optimization is always an important component of software development.  And sometimes you just really need to see if one solution to a problem is faster than an alternative.
 
-Why Benchmark?
---------------
-Because fast code is good.  While premature optimization is certainly evil, optimization is always an important component of software development.  And sometimes you just really need to see if one solution to a problem is faster than an alternative.
-
-Why Use Athletic?
-------------------------------------------
+### Why Use Athletic?
 Because it makes benchmarking easy!  Athletic is built around annotations.  Simply create a benchmarking class and annotate a few methods:
 
 ```php
-    /**
-     * @iterations 1000
-     */
-    public function fastIndexingAlgo()
-    {
-        $this->fast->index($this->data);
-    }
+/**
+ * @iterations 1000
+ */
+public function fastIndexingAlgo()
+{
+    $this->fast->index($this->data);
+}
 ```
 
-Without Athletic, you have to litter your code with microtime() calls and build timing metrics yourself.  Or you end up building a benchmark harness framework similar to Athletic (but probably with less syntactic sugar...because who builds throw-away code to read annotations?)
+Without Athletic, you have to litter your code with microtime() calls and build timing metrics yourself.  Or you end up building a benchmark harness remarkably similar to Athletic (but probably with less syntactic sugar...because who builds throw-away code to read test annotations and fancy output?)
 
-Why can't I use xDebug?
------------------------
-
+### Why can't I use xDebug?
 xDebug is an excellent profiling tool, but it is not a benchmarking tool.  xdebug (and by extension, cachegrind) will show you what is fast/slow inside your method, and is indespensible for actually optimizing your code.  But it is not useful for running 1000 iterations of a particular function and determining average execution time.
 
-Quick Installation via Composer
--------------------------------
+## Quick Installation via Composer
 You can easily install Athletic through [Composer](http://getcomposer.org) in two steps:
 
-    # Install Composer
-    curl -sS https://getcomposer.org/installer | php
+```bash
+# Install Composer
+curl -sS https://getcomposer.org/installer | php
 
-    # Add Athletic as a dependency
-    php composer.phar require athletic/athletic:~0.1
-
-Installation via Composer
--------------------------
-A more manual installation involves editing your ``composer.json`` file:
-
-1. Add ``athletic/athletic`` as a dependency in your project's ``composer.json`` file:
-
-        {
-            "require-dev": {
-                "athletic/athletic": "~0.1"
-            }
-        }
-
-2. Download and install Composer:
-
-        curl -s http://getcomposer.org/installer | php
-
-3. Install your dependencies:
-
-        php composer.phar install
+# Add Athletic as a dependency
+php composer.phar require athletic/athletic:~0.1
+```
 
 You can find out more on how to install Composer, configure autoloading, and other best-practices for defining dependencies at [getcomposer.org](http://getcomposer.org).
 
-Usage
------
+# Usage
 
-To begin using Athletic, you must create an "Event" file.  This is the analog of a PHPUnit Test Case.  An Event will benchmark one or more functions related to your code, compile the results and output them to the command line.
+To begin using Athletic, you must create an **Event**.  This is the analog of a PHPUnit Test Case.  An Event will benchmark one or more functions related to your code, compile the results and output them to the command line.
 
 Here is a sample Event:
 
@@ -113,7 +87,8 @@ class IndexingEvent extends AthleticEvent
 }
 ```
 
-Let's look at how this works.
+### Let's look at how this works.
+
 ```php
 <?php
 
@@ -144,7 +119,7 @@ Next, we declare an indexing class that extends \Athletic\AthleticEvent.  This i
         $this->data = array('field' => 'value');
     }
 ```
-Next, we have some private variables and a setUp() method.  Like PHPUnit, `setUp()` is invoked once at the beginning of each benchmark run.  This is a good place to instantiate variables that are important to the benchmark itself, populate data, build database connections, etc.  In this example, we are building two "Indexing" classes and a sample piece of data.  *(More details about setup and tear down are further down in this document)*
+Next, we have some private variables and a setUp() method.  The `setUp()` method is invoked once at the beginning of each benchmark iteration.  This is a good place to instantiate variables that are important to the benchmark itself, populate data, build database connections, etc.  In this example, we are building two "Indexing" classes and a sample piece of data.  *(More details about setup and tear down are further down in this document)*
 
 ```php
     /**
@@ -166,12 +141,32 @@ Next, we have some private variables and a setUp() method.  Like PHPUnit, `setUp
 ```
 Finally, we get to the meat of the benchmark.  Here we have two methods that are annotated with `@iterations` in the docblock.  The `@iterations` annotation tells Athletic how many times to repeat the method.  If a method does not have an iterations annotation, it will not be benchmarked.
 
-Benchmark Output
-----------------
+That's it!  Now you are ready to run the benchmark.
+
+### Running Athletic
+A benchmark test is run from the command line:
+
+```
+php ./Athletic/bootstrap.php -p /home/ProjectDir/benchmarks/ -b /home/ProjectDir/vendor/autoload.php
+```
+
+The tool has a few options that can be set:
+
+| Option | Long Form | Required | Description |
+|-|-|-|-|
+| -p | --path      |Yes| Specifies the path to the Events to benchmark.  Will recursively load all files/classes that extend `AthleticEvent`  |
+| -b | --bootstrap || Sets the path to an optional bootstrap file which is included before anything else is done.  This is often used to include an autoloader. |
+| -h | --help      || Help screen with options and their descriptions |
+
+**Note:** Athletic is intended to be used as a single PHAR archive, but that process has not been built yet.  Soon!
+
+### Benchmark Output
 
 So what does the output of a benchmark look like?
 
 ```
+$ php ./Athletic/bootstrap.php -p /home/ProjectDir/benchmarks/ -b /home/ProjectDir/vendor/autoload.php
+
 Vendor\Package\Benchmarks\Indexing\IndexingEvent
     Method Name             Iterations    Average Time      Ops/second
     ---------------------  ------------  --------------    -------------
@@ -181,21 +176,25 @@ Vendor\Package\Benchmarks\Indexing\IndexingEvent
 
 The default formatter outputs the Event class name, each method name, the number of iterations, average time and operations per second.  More advanced formatters will be created in the near future (CSVFormatter, database export, advanced statistics, etc).
 
-Further Information
-===================
+# Further Information
 
-SetUps and TearDowns
---------------------
+### SetUps and TearDowns
+
 Athletic offers several methods to setup and tear down data/variables.
 
- - classSetUp() : invoked at the beginning of the Event before anything else has ocurred
- - setUp() : invoked once before each iteration of the method being benchmark.
- - classTearDown() : invoked at the end of the event after everything else has ocurred
- - tearDown() : invoked after each iteration of a benchmark has completed.
+| Method | Description|
+|-|-|
+| classSetUp() | Invoked at the beginning of the Event before anything else has ocurred |
+| setUp() | Invoked once before each iteration of the method being benchmark.|
+| classTearDown() | Invoked at the end of the event after everything else has ocurred.|
+| tearDown() | Invoked after each iteration of a benchmark has completed.|
 
-There are two levels of setup and tear down to prevent "state leakage" between benchmarks.  For example, an object that caches calculations will perform faster on subsequent calls to the method.  If the goal is to benchmark the initial calculation, it makes sense to place the instantiation of the object in setUp().  If the goal, however, is to benchmark the entire process (initial calculation and subsequent caching), then it makes more sense to instantiate the object in classSetUp() so that it is only built once.
+There are two levels of setup and tear down to prevent "state leakage" between benchmarks.  For example, an object that caches calculations will perform faster on subsequent calls to the method.  
 
-Calibration
------------
+If the goal is to benchmark the initial calculation, it makes sense to place the instantiation of the object in setUp().  
+
+If the goal, however, is to benchmark the entire process (initial calculation and subsequent caching), then it makes more sense to instantiate the object in classSetUp() so that it is only built once.
+
+### Calibration
 
 Athletic uses Reflection and variable functions to invoke the methods in your Event.  Because there is some internal overhead to variable functions, Athletic performs a "calibration" step before each iteration.  This step calls an empty calibration method and times how long it takes.  This time is then subtracted from the iterations total time, providing a more accurate total time.
