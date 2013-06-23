@@ -3,7 +3,7 @@ Athletic is a benchmarking framework.  It allows developers to benchmark their c
 
 Athletic was inspired by the annotation format that PHPUnit uses.  Benchmark tests extend the `AthleticEvent` class and are annotated with specific docblock parameters.  The benchmark suite is then run with the Athletic command-line tool.
 
-[![Build Status](https://travis-ci.org/polyfractal/athletic.png?branch=master)](https://travis-ci.org/polyfractal/athletic)
+[![Build Status](https://travis-ci.org/polyfractal/athletic.png?branch=master)](https://travis-ci.org/polyfractal/athletic) [![Coverage Status](https://coveralls.io/repos/polyfractal/athletic/badge.png?branch=master)](https://coveralls.io/r/polyfractal/athletic?branch=master)
 
 ### Why Benchmark?
 Because fast code is good!  While *premature* optimization is certainly evil, optimization is always an important component of software development.  And sometimes you just really need to see if one solution to a problem is faster than an alternative.
