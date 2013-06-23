@@ -8,7 +8,6 @@
 namespace Athletic;
 
 
-use Athletic\Common\CmdLine;
 use Athletic\Common\DICBuilder;
 use Athletic\Discovery\RecursiveFileLoader;
 use Athletic\Runners\SuiteRunner;

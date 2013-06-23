@@ -9,24 +9,27 @@ namespace Athletic\Tests\Discovery;
 
 
 use Athletic\Discovery\RecursiveFileLoader;
+use Mockery as m;
 use org\bovigo\vfs\vfsStream;
 use org\bovigo\vfs\vfsStreamDirectory;
 use PHPUnit_Framework_TestCase;
-use Mockery as m;
 
 class RecursiveFileLoaderTest extends PHPUnit_Framework_TestCase
 {
     private $root;
+
 
     public function setUp()
     {
         $this->root = vfsStream::setup('root');
     }
 
+
     public function tearDown()
     {
         m::close();
     }
+
 
     public function testLoadThreeClassesFromPath()
     {
@@ -89,19 +92,19 @@ class RecursiveFileLoaderTest extends PHPUnit_Framework_TestCase
                              ->getMock();
 
         $mockParserFactory->shouldReceive('create')
-                             ->once()
-                             ->with('vfs://root/threeClasses/Package/Child2/Class2.php')
-                             ->andReturn($mockParser2)
-                             ->getMock();
+        ->once()
+        ->with('vfs://root/threeClasses/Package/Child2/Class2.php')
+        ->andReturn($mockParser2)
+        ->getMock();
 
         $mockParserFactory->shouldReceive('create')
-                             ->once()
-                             ->with('vfs://root/threeClasses/Package/Child2/Class3.php')
-                             ->andReturn($mockParser3)
-                             ->getMock();
+        ->once()
+        ->with('vfs://root/threeClasses/Package/Child2/Class3.php')
+        ->andReturn($mockParser3)
+        ->getMock();
 
         $fileLoader = new RecursiveFileLoader($mockParserFactory, $path);
-        $classes = $fileLoader->getClasses();
+        $classes    = $fileLoader->getClasses();
 
         $expectedClasses = array(
             'Vendor\Package\Child1\Class1',
@@ -112,9 +115,10 @@ class RecursiveFileLoaderTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($expectedClasses, $classes);
     }
 
+
     public function testLoadThreeClassesFromPathNoneAreAthletic()
     {
-         $structure = array(
+        $structure = array(
             'threeClasses' => array(
                 'Package' => array(
                     'Child1' => array(
@@ -132,10 +136,10 @@ class RecursiveFileLoaderTest extends PHPUnit_Framework_TestCase
         $path = vfsStream::url('root\threeClasses\Package');
 
         $mockParser = m::mock('\Athletic\Discovery\Parser')
-                       ->shouldReceive('isAthleticEvent')
-                       ->times(3)
-                       ->andReturn(false)
-                       ->getMock();
+                      ->shouldReceive('isAthleticEvent')
+                      ->times(3)
+                      ->andReturn(false)
+                      ->getMock();
 
         $mockParserFactory = m::mock('\Athletic\Factories\ParserFactory')
                              ->shouldReceive('create')
@@ -145,19 +149,19 @@ class RecursiveFileLoaderTest extends PHPUnit_Framework_TestCase
                              ->getMock();
 
         $mockParserFactory->shouldReceive('create')
-                            ->once()
-                            ->with('vfs://root/threeClasses/Package/Child2/Class2.php')
-                            ->andReturn($mockParser)
-                            ->getMock();
+        ->once()
+        ->with('vfs://root/threeClasses/Package/Child2/Class2.php')
+        ->andReturn($mockParser)
+        ->getMock();
 
         $mockParserFactory->shouldReceive('create')
-                            ->once()
-                            ->with('vfs://root/threeClasses/Package/Child2/Class3.php')
-                            ->andReturn($mockParser)
-                            ->getMock();
+        ->once()
+        ->with('vfs://root/threeClasses/Package/Child2/Class3.php')
+        ->andReturn($mockParser)
+        ->getMock();
 
         $fileLoader = new RecursiveFileLoader($mockParserFactory, $path);
-        $classes = $fileLoader->getClasses();
+        $classes    = $fileLoader->getClasses();
 
         $this->assertEmpty($classes);
     }

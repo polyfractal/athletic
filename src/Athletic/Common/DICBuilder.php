@@ -16,10 +16,12 @@ class DICBuilder
     /** @var  Athletic */
     private $athletic;
 
+
     public function __construct($athletic)
     {
         $this->athletic = $athletic;
     }
+
 
     public function buildDependencyGraph()
     {
@@ -36,6 +38,7 @@ class DICBuilder
         $this->setupClassResults();
 
     }
+
 
     private function setupClassRunner()
     {
@@ -59,7 +62,7 @@ class DICBuilder
         $this->athletic['discovery']      = function ($dic) {
             /** @var CmdLine $cmdLine */
             $cmdLine = $dic['cmdLine'];
-            $path = $cmdLine->getSuitePath();
+            $path    = $cmdLine->getSuitePath();
             return new $dic['discoveryClass']($dic['parserFactory'], $path);
         };
 
@@ -84,6 +87,7 @@ class DICBuilder
 
     }
 
+
     private function setupClassResults()
     {
         $this->athletic['classResultsFactoryClass'] = '\Athletic\Factories\ClassResultsFactory';
@@ -99,6 +103,7 @@ class DICBuilder
         };
     }
 
+
     private function setupMethodResults()
     {
         $this->athletic['methodResultsFactoryClass'] = '\Athletic\Factories\MethodResultsFactory';
@@ -113,7 +118,8 @@ class DICBuilder
             };
         };
     }
-    
+
+
     private function setupCmdLine()
     {
 
@@ -125,6 +131,7 @@ class DICBuilder
             return new Command();
         };
     }
+
 
     private function setupFormatter()
     {
@@ -144,7 +151,6 @@ class DICBuilder
             return new $dic['publisherClass']($dic['formatter']);
         };
     }
-
 
 
     private function setupSuiteRunner()

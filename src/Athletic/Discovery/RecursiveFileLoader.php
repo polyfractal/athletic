@@ -15,15 +15,16 @@ use Athletic\Factories\ParserFactory;
  */
 class RecursiveFileLoader
 {
-    /** @var array  */
+    /** @var array */
     private $fqns = array();
 
     /** @var  ParserFactory */
     private $parserFactory;
 
+
     /**
      * @param ParserFactory $parserFactory
-     * @param string           $path
+     * @param string        $path
      */
     public function __construct(ParserFactory $parserFactory, $path)
     {
@@ -35,6 +36,7 @@ class RecursiveFileLoader
         $this->fqns = $this->getFQN($athleticClasses);
 
     }
+
 
     /**
      * @return string[]
@@ -63,6 +65,7 @@ class RecursiveFileLoader
 
     /**
      * @param Parser[] $parsedPHPFiles
+     *
      * @return Parser[]
      */
     private function getAthleticClasses($parsedPHPFiles)
@@ -80,8 +83,10 @@ class RecursiveFileLoader
         return $athleticClasses;
     }
 
+
     /**
      * @param Parser[] $athleticClasses
+     *
      * @return array
      */
     private function getFQN($athleticClasses)
@@ -93,6 +98,7 @@ class RecursiveFileLoader
 
         return $fqns;
     }
+
 
     /**
      * @param string $dir
@@ -110,7 +116,7 @@ class RecursiveFileLoader
                 if (is_dir("$dir/$f")) {
                     $result = array_merge($result, $this->scanDirectory("$dir/$f", "$prefix$f/"));
                 } else {
-                    $result[] = $dir .'/' . $f;
+                    $result[] = $dir . '/' . $f;
                 }
             }
         }

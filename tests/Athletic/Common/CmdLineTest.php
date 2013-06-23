@@ -15,15 +15,18 @@ class CmdLineTest extends \PHPUnit_Framework_TestCase
 {
     private $root;
 
+
     public function setUp()
     {
         $this->root = vfsStream::setup('root');
     }
 
+
     public function tearDown()
     {
         m::close();
     }
+
 
     public function testConstructor()
     {
@@ -34,6 +37,7 @@ class CmdLineTest extends \PHPUnit_Framework_TestCase
 
         $cmdLine = new CmdLine($mockCommand);
     }
+
 
     public function testConstructorWithBootstrap()
     {

@@ -25,7 +25,7 @@ class ClassRunner
     /** @var  MethodResultsFactory */
     private $methodResultsFactory;
 
-    /** @var ClassResults  */
+    /** @var ClassResults */
     private $classResults;
 
 
@@ -35,7 +35,7 @@ class ClassRunner
      */
     public function __construct(MethodResultsFactory $methodResultsFactory, $class)
     {
-        $this->class = $class;
+        $this->class                = $class;
         $this->methodResultsFactory = $methodResultsFactory;
     }
 

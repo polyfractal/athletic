@@ -21,6 +21,7 @@ abstract class AthleticEvent
     /** @var  MethodResultsFactory */
     private $methodResultsFactory;
 
+
     public function __construct()
     {
 
@@ -58,6 +59,7 @@ abstract class AthleticEvent
     {
         $this->methodResultsFactory = $methodResultsFactory;
     }
+
 
     /**
      * @return MethodResults[]

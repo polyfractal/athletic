@@ -20,10 +20,11 @@ class DefaultFormatterTest extends \PHPUnit_Framework_TestCase
         m::close();
     }
 
+
     public function testOneClassOneMethod()
     {
         /** @var MethodResults $mockMethodResult */
-        $mockMethodResult = m::mock('\Athletic\Results\MethodResults');
+        $mockMethodResult             = m::mock('\Athletic\Results\MethodResults');
         $mockMethodResult->methodName = 'testName';
         $mockMethodResult->avg        = 5;
         $mockMethodResult->min        = 5;
@@ -36,9 +37,9 @@ class DefaultFormatterTest extends \PHPUnit_Framework_TestCase
         $mockMethodResults = new ArrayIterator(array($mockMethodResult));
 
         $mockClassResult = m::mock('\Athletic\Results\ClassResults')
-                      ->shouldReceive('getClassName')
-                      ->andReturn('testClass')
-                      ->getMock()
+                           ->shouldReceive('getClassName')
+                           ->andReturn('testClass')
+                           ->getMock()
                            ->shouldReceive('getIterator')
                            ->andReturn($mockMethodResults)
                            ->getMock();
@@ -47,7 +48,7 @@ class DefaultFormatterTest extends \PHPUnit_Framework_TestCase
 
 
         $formatter = new DefaultFormatter();
-        $ret = $formatter->getFormattedResults($suiteResults);
+        $ret       = $formatter->getFormattedResults($suiteResults);
 
         $expected = <<<EOF
 
@@ -67,7 +68,7 @@ EOF;
     public function testOneClassThreeMethods()
     {
         /** @var MethodResults $mockMethodResult */
-        $mockMethodResult = m::mock('\Athletic\Results\MethodResults');
+        $mockMethodResult             = m::mock('\Athletic\Results\MethodResults');
         $mockMethodResult->methodName = 'testName';
         $mockMethodResult->avg        = 5;
         $mockMethodResult->min        = 5;
@@ -91,7 +92,7 @@ EOF;
 
 
         $formatter = new DefaultFormatter();
-        $ret = $formatter->getFormattedResults($suiteResults);
+        $ret       = $formatter->getFormattedResults($suiteResults);
 
         $expected = <<<EOF
 
@@ -109,10 +110,11 @@ EOF;
         $this->assertEquals($expected, $ret);
     }
 
+
     public function testThreeClassOneMethod()
     {
         /** @var MethodResults $mockMethodResult */
-        $mockMethodResult = m::mock('\Athletic\Results\MethodResults');
+        $mockMethodResult             = m::mock('\Athletic\Results\MethodResults');
         $mockMethodResult->methodName = 'testName';
         $mockMethodResult->avg        = 5;
         $mockMethodResult->min        = 5;
@@ -136,7 +138,7 @@ EOF;
 
 
         $formatter = new DefaultFormatter();
-        $ret = $formatter->getFormattedResults($suiteResults);
+        $ret       = $formatter->getFormattedResults($suiteResults);
 
         $expected = <<<EOF
 

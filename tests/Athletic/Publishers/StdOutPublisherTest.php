@@ -17,9 +17,10 @@ class StdOutPublisherTest extends \PHPUnit_Framework_TestCase
         m::close();
     }
 
+
     public function testPublish()
     {
-        $output = 'abc';
+        $output        = 'abc';
         $mockResults   = m::mock('\Athletic\Results\ClassResults');
         $mockFormatter = m::mock('\Athletic\Formatters\FormatterInterface')
                          ->shouldReceive('getFormattedResults')

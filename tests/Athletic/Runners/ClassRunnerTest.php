@@ -17,21 +17,24 @@ class ClassRunnerTest extends PHPUnit_Framework_TestCase
 {
     private $root;
 
+
     public function setUp()
     {
         $this->root = vfsStream::setup('root');
     }
+
 
     public function tearDown()
     {
         m::close();
     }
 
+
     public function testConstructor()
     {
-        $class = 'abc';
+        $class             = 'abc';
         $mockMethodFactory = m::mock('\Athletic\Factories\MethodResultsFactory');
-        $classRunner = new ClassRunner($mockMethodFactory, $class);
+        $classRunner       = new ClassRunner($mockMethodFactory, $class);
     }
 
 
@@ -40,9 +43,9 @@ class ClassRunnerTest extends PHPUnit_Framework_TestCase
      */
     public function testRunWithNonExistantClass()
     {
-        $class = 'abc';
+        $class             = 'abc';
         $mockMethodFactory = m::mock('\Athletic\Factories\MethodResultsFactory');
-        $classRunner = new ClassRunner($mockMethodFactory, $class);
+        $classRunner       = new ClassRunner($mockMethodFactory, $class);
 
         $classRunner->run();
     }
@@ -73,7 +76,6 @@ class TestRunWithAthleticClass extends \Athletic\AthleticEvent
 EOF;
 
 
-
         $structure = array(
             'classRunner' => array(
                 'testRunWithAthleticClass.php' => $classFile
@@ -88,7 +90,7 @@ EOF;
         $class = 'Athletic\Tests\Runners\TestRunWithAthleticClass';
 
         $mockMethodFactory = m::mock('\Athletic\Factories\MethodResultsFactory');
-        $classRunner = new ClassRunner($mockMethodFactory, $class);
+        $classRunner       = new ClassRunner($mockMethodFactory, $class);
 
         $ret      = $classRunner->run();
         $expected = array('field' => 'value');
@@ -123,7 +125,6 @@ class TestRunWithNonAthleticClass
 EOF;
 
 
-
         $structure = array(
             'classRunner' => array(
                 'testRunWithNonAthleticClass.php' => $classFile
@@ -138,7 +139,7 @@ EOF;
         $class = 'Athletic\Tests\Runners\TestRunWithNonAthleticClass';
 
         $mockMethodFactory = m::mock('\Athletic\Factories\MethodResultsFactory');
-        $classRunner = new ClassRunner($mockMethodFactory, $class);
+        $classRunner       = new ClassRunner($mockMethodFactory, $class);
 
         $ret = $classRunner->run();
 

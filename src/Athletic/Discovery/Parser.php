@@ -27,7 +27,7 @@ class Parser
     public function __construct($path)
     {
         $this->path = $path;
-        $php = file_get_contents($path);
+        $php        = file_get_contents($path);
         $this->parsePHP($php);
     }
 
@@ -44,6 +44,7 @@ class Parser
         }
     }
 
+
     /**
      * @return string
      */
@@ -56,7 +57,7 @@ class Parser
         }
 
         if (isset($this->className) === true) {
-            $fqn .= '\\'.$this->className;
+            $fqn .= '\\' . $this->className;
         }
 
         return $fqn;
@@ -105,7 +106,7 @@ class Parser
 
     /**
      * @param array $tokens
-     * @param int $i
+     * @param int   $i
      *
      * @return string
      */
@@ -140,7 +141,7 @@ class Parser
 
 
     /**
-     * @param array$tokens
+     * @param array $tokens
      */
     private function setParentClass($tokens)
     {
@@ -158,7 +159,7 @@ class Parser
 
     /**
      * @param array $tokens
-     * @param int $i
+     * @param int   $i
      *
      * @return string
      */

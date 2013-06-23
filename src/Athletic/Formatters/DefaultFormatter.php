@@ -28,7 +28,7 @@ class DefaultFormatter implements FormatterInterface
 
 
         foreach ($results as $result) {
-            $returnString .= $result->getClassName()."\n";
+            $returnString .= $result->getClassName() . "\n";
 
             $longest = 0;
             /** @var MethodResults $methodResult */
@@ -46,10 +46,10 @@ class DefaultFormatter implements FormatterInterface
 
             foreach ($result as $methodResult) {
 
-                $method = str_pad($methodResult->methodName, $longest);
+                $method     = str_pad($methodResult->methodName, $longest);
                 $iterations = str_pad(number_format($methodResult->iterations), 10);
-                $avg = str_pad(number_format($methodResult->avg, 13), 13);
-                $ops = str_pad(number_format($methodResult->ops, 5), 7);
+                $avg        = str_pad(number_format($methodResult->avg, 13), 13);
+                $ops        = str_pad(number_format($methodResult->ops, 5), 7);
                 $returnString .= "    $method: [$iterations] [$avg] [$ops]\n";
             }
             $returnString .= "\n\n";

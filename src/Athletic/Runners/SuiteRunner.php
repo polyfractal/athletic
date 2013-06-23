@@ -70,7 +70,7 @@ class SuiteRunner
      */
     public function runClass($class)
     {
-        $classRunner = $this->classRunnerFactory->create($class);
+        $classRunner   = $this->classRunnerFactory->create($class);
         $methodResults = $classRunner->run();
 
         return $this->classResultsFactory->create($class, $methodResults);

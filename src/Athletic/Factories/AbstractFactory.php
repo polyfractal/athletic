@@ -15,6 +15,7 @@ abstract class AbstractFactory
     /** @var  Pimple */
     protected $container;
 
+
     /**
      * @param Pimple $container
      */
