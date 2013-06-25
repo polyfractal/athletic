@@ -32,6 +32,7 @@ class Athletic extends Pimple
 
     public function run()
     {
+        $this->setupErrorHandler();
         $classesToBenchmark = $this->getClassesToBenchmark();
         $this->benchmark($classesToBenchmark);
     }
@@ -59,6 +60,15 @@ class Athletic extends Pimple
         $suite->runSuite($classes);
         $suite->publishResults();
 
+    }
+
+    private function setupErrorHandler()
+    {
+        /** @var Athletic\Common\ErrorHandlerInterace $handler */
+        $handler = $this['errorHandler'];
+
+        set_exception_handler(array($handler, 'handleException'));
+        set_error_handler(array($handler, 'handleError'));
     }
 }
 
