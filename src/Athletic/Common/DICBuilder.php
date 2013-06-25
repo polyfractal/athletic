@@ -32,7 +32,6 @@ class DICBuilder
 
     public function buildDependencyGraph()
     {
-
         $this->setupDiscovery();
         $this->setupParser();
         $this->setupCmdLine();
@@ -43,7 +42,7 @@ class DICBuilder
         $this->setupClassRunner();
         $this->setupMethodResults();
         $this->setupClassResults();
-
+        $this->setupErrorHandler();
     }
 
 
@@ -72,8 +71,6 @@ class DICBuilder
             $path    = $cmdLine->getSuitePath();
             return new $dic['discoveryClass']($dic['parserFactory'], $path);
         };
-
-
     }
 
 
@@ -90,8 +87,6 @@ class DICBuilder
                 return new $dic['parserClass']($path);
             };
         };
-
-
     }
 
 
@@ -129,7 +124,6 @@ class DICBuilder
 
     private function setupCmdLine()
     {
-
         $this->athletic['cmdLine'] = function ($dic) {
             return new CmdLine($dic['command']);
         };
@@ -142,8 +136,6 @@ class DICBuilder
 
     private function setupFormatter()
     {
-
-
         $this->athletic['formatterClass'] = '\Athletic\Formatters\DefaultFormatter';
         $this->athletic['formatter']      = function ($dic) {
             return new $dic['formatterClass']();
@@ -162,11 +154,18 @@ class DICBuilder
 
     private function setupSuiteRunner()
     {
-
         $this->athletic['suiteRunnerClass'] = '\Athletic\Runners\SuiteRunner';
         $this->athletic['suiteRunner']      = function ($dic) {
             return new $dic['suiteRunnerClass']($dic['publisher'], $dic['classResultsFactory'], $dic['classRunnerFactory']);
         };
 
+    }
+
+    private function setupErrorHandler()
+    {
+        $this->athletic['errorHandlerClass'] = '\Athletic\Common\CmdLineErrorHandler';
+        $this->athletic['errorHandler'] = function($dic) {
+            return new $dic['errorHandlerClass']($dic['command']);
+        };
     }
 }
