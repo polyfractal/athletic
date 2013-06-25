@@ -26,7 +26,7 @@ public function fastIndexingAlgo()
 Without Athletic, you have to litter your code with microtime() calls and build timing metrics yourself.  Or you end up building a benchmark harness remarkably similar to Athletic (but probably with less syntactic sugar...because who builds throw-away code to read test annotations and fancy output?)
 
 ### Why can't I use xDebug?
-xDebug is an excellent profiling tool, but it is not a benchmarking tool.  xdebug (and by extension, cachegrind) will show you what is fast/slow inside your method, and is indespensible for actually optimizing your code.  But it is not useful for running 1000 iterations of a particular function and determining average execution time.
+xDebug is an excellent profiling tool, but it is not a benchmarking tool.  xdebug (and by extension, cachegrind) will show you what is fast/slow inside your method, and is indispensable for actually optimizing your code.  But it is not useful for running 1000 iterations of a particular function and determining average execution time.
 
 ## Quick Installation via Composer
 You can easily install Athletic through [Composer](http://getcomposer.org) in two steps:
@@ -190,9 +190,9 @@ Athletic offers several methods to setup and tear down data/variables.
 
 | Method | Description |
 | ------ | ----------- |
-| classSetUp() | Invoked at the beginning of the Event before anything else has ocurred |
+| classSetUp() | Invoked at the beginning of the Event before anything else has occurred |
 | setUp() | Invoked once before each iteration of the method being benchmark.|
-| classTearDown() | Invoked at the end of the event after everything else has ocurred.|
+| classTearDown() | Invoked at the end of the event after everything else has occurred.|
 | tearDown() | Invoked after each iteration of a benchmark has completed.|
 
 There are two levels of setup and tear down to prevent "state leakage" between benchmarks.  For example, an object that caches calculations will perform faster on subsequent calls to the method.  
