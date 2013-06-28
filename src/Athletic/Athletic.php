@@ -9,9 +9,9 @@ namespace Athletic;
 
 
 use Athletic\Common\DICBuilder;
+use Athletic\Common\ErrorHandlerInterface;
 use Athletic\Discovery\RecursiveFileLoader;
 use Athletic\Runners\SuiteRunner;
-use Athletic\Common\ErrorHandlerInterface;
 use Pimple;
 
 /**
@@ -62,6 +62,7 @@ class Athletic extends Pimple
         $suite->publishResults();
 
     }
+
 
     private function setupErrorHandler()
     {

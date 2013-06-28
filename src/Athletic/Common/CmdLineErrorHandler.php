@@ -4,7 +4,6 @@ namespace Athletic\Common;
 
 use Athletic\Factories\ErrorExceptionFactory;
 use Commando\Command;
-use ErrorException;
 
 /**
  * CmdLineErrorHandler
@@ -15,7 +14,7 @@ class CmdLineErrorHandler implements ErrorHandlerInterface
     /** @var Command $command */
     private $command;
 
-    /** @var ErrorExceptionFactory  */
+    /** @var ErrorExceptionFactory */
     private $errorExceptionFactory;
 
 

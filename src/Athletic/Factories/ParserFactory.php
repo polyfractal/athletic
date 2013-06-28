@@ -12,7 +12,7 @@ use Athletic\Factories\AbstractFactory;
 
 /**
  * Class ParserFactory
- * @package Athletic\Discovery
+ * @package Athletic\Factories
  */
 class ParserFactory extends AbstractFactory
 {

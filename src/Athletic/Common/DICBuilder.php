@@ -161,11 +161,12 @@ class DICBuilder
 
     }
 
+
     private function setupErrorHandler()
     {
 
         $this->athletic['errorExceptionClass'] = '\ErrorException';
-        $this->athletic['errorException'] = function ($dic) {
+        $this->athletic['errorException']      = function ($dic) {
             return function ($errorLevel, $errorMessage, $errorFile, $errorLine, $errorContext) use ($dic) {
                 return new $dic['errorExceptionClass'](
                     $errorLevel,

@@ -11,6 +11,10 @@ use Athletic\Common\CmdLine;
 use Mockery as m;
 use org\bovigo\vfs\vfsStream;
 
+/**
+ * Class CmdLineTest
+ * @package Athletic\Tests\Common
+ */
 class CmdLineTest extends \PHPUnit_Framework_TestCase
 {
     private $root;

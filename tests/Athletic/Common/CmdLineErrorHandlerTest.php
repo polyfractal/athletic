@@ -7,27 +7,28 @@
 
 namespace Athletic\Tests\Common;
 
+use Athletic\Common\CmdLineErrorHandler;
 use Mockery as m;
-use \Athletic\Common\CmdLineErrorHandler;
 
 /**
  * Class CmdLineErrorHandler
  * @package Athletic\Tests\Common
  */
-class CmdLineErrorHandlerTest  extends \PHPUnit_Framework_TestCase
+class CmdLineErrorHandlerTest extends \PHPUnit_Framework_TestCase
 {
     public function tearDown()
     {
         m::close();
     }
 
+
     public function testException()
     {
         $mockException = m::mock('\Exception');
-        $mockCommand = m::mock('\Commando\Command')
-                       ->shouldReceive('error')
-                       ->with($mockException)
-                       ->getMock();
+        $mockCommand   = m::mock('\Commando\Command')
+                         ->shouldReceive('error')
+                         ->with($mockException)
+                         ->getMock();
 
         $mockErrorExceptionFactory = m::mock('\Athletic\Factories\ErrorExceptionFactory');
 
@@ -35,6 +36,7 @@ class CmdLineErrorHandlerTest  extends \PHPUnit_Framework_TestCase
         $handler->handleException($mockException);
 
     }
+
 
     public function testError()
     {
@@ -44,10 +46,10 @@ class CmdLineErrorHandlerTest  extends \PHPUnit_Framework_TestCase
         $errorLine    = 1;
 
         $mockException = m::mock('\Exception');
-        $mockCommand = m::mock('\Commando\Command')
-                       ->shouldReceive('error')
-                       ->with($mockException)
-                       ->getMock();
+        $mockCommand   = m::mock('\Commando\Command')
+                         ->shouldReceive('error')
+                         ->with($mockException)
+                         ->getMock();
 
         $mockErrorExceptionFactory = m::mock('\Athletic\Factories\ErrorExceptionFactory')
                                      ->shouldReceive('create')
