@@ -164,7 +164,7 @@ class DICBuilder
     private function setupErrorHandler()
     {
         $this->athletic['errorHandlerClass'] = '\Athletic\Common\CmdLineErrorHandler';
-        $this->athletic['errorHandler'] = function($dic) {
+        $this->athletic['errorHandler']      = function ($dic) {
             return new $dic['errorHandlerClass']($dic['command']);
         };
     }

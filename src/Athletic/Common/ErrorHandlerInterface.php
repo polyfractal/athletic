@@ -3,9 +3,9 @@
 namespace Athletic\Common;
 
 /**
-* ErrorHandlerInterface
-* @package Athletic
-*/
+ * ErrorHandlerInterface
+ * @package Athletic
+ */
 interface ErrorHandlerInterface
 {
     /**
@@ -17,8 +17,9 @@ interface ErrorHandlerInterface
      */
     public function handleError($errorLevel, $errorMessage, $errorFile, $errorLine, $errorContext = array());
 
+
     /**
      * @param \Exception $exception
      */
-    public function handleException(\Exception $exception);   
+    public function handleException(\Exception $exception);
 }

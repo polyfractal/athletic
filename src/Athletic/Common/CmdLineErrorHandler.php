@@ -1,17 +1,19 @@
 <?php
 
 namespace Athletic\Common;
+
 use Commando\Command;
 use ErrorException;
 
 /**
-* CmdLineErrorHandler
-* @package Athletic
-*/
+ * CmdLineErrorHandler
+ * @package Athletic
+ */
 class CmdLineErrorHandler implements ErrorHandlerInterface
 {
     /** @var Command $command */
     private $command;
+
 
     /**
      * @param Command $command
@@ -21,6 +23,7 @@ class CmdLineErrorHandler implements ErrorHandlerInterface
         $this->command = $command;
     }
 
+
     /*
      * {@inheritDoc}
      */
@@ -28,6 +31,7 @@ class CmdLineErrorHandler implements ErrorHandlerInterface
     {
         $this->command->error($exception);
     }
+
 
     /*
      * {@inheritDoc}
