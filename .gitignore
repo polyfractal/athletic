@@ -6,6 +6,10 @@ composer.phar
 #editor related
 .idea
 
+# phar-generation specific
+box.json
+ahtletic.phar
+
 # OS generated files
 .DS_Store
 .DS_Store?
