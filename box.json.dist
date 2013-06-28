@@ -1,0 +1,8 @@
+{
+  "main": "bootstrap.php",
+  "output": "athletic.phar",
+  "compactors": ["Herrera\\Box\\Compactor\\Composer"],
+  "chmod": "0755",
+  "directories": ["src/"],
+  "stub": true
+}
