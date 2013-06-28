@@ -163,9 +163,28 @@ class DICBuilder
 
     private function setupErrorHandler()
     {
+
+        $this->athletic['errorExceptionClass'] = '\ErrorException';
+        $this->athletic['errorException'] = function ($dic) {
+            return function ($errorLevel, $errorMessage, $errorFile, $errorLine, $errorContext) use ($dic) {
+                return new $dic['errorExceptionClass'](
+                    $errorLevel,
+                    $errorMessage,
+                    $errorFile,
+                    $errorLine,
+                    $errorContext
+                );
+            };
+        };
+
+        $this->athletic['errorExceptionFactoryClass'] = '\Athletic\Factories\ErrorExceptionFactory';
+        $this->athletic['errorExceptionFactory']      = function ($dic) {
+            return new $dic['errorExceptionFactoryClass']($dic);
+        };
+
         $this->athletic['errorHandlerClass'] = '\Athletic\Common\CmdLineErrorHandler';
         $this->athletic['errorHandler']      = function ($dic) {
-            return new $dic['errorHandlerClass']($dic['command']);
+            return new $dic['errorHandlerClass']($dic['command'], $dic['errorExceptionFactory']);
         };
     }
 }

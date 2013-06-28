@@ -2,6 +2,7 @@
 
 namespace Athletic\Common;
 
+use Athletic\Factories\ErrorExceptionFactory;
 use Commando\Command;
 use ErrorException;
 
@@ -14,13 +15,18 @@ class CmdLineErrorHandler implements ErrorHandlerInterface
     /** @var Command $command */
     private $command;
 
+    /** @var ErrorExceptionFactory  */
+    private $errorExceptionFactory;
+
 
     /**
-     * @param Command $command
+     * @param Command               $command
+     * @param ErrorExceptionFactory $errorExceptionFactory
      */
-    public function __construct($command)
+    public function __construct($command, ErrorExceptionFactory $errorExceptionFactory)
     {
-        $this->command = $command;
+        $this->command               = $command;
+        $this->errorExceptionFactory = $errorExceptionFactory;
     }
 
 
@@ -40,8 +46,14 @@ class CmdLineErrorHandler implements ErrorHandlerInterface
     {
         // Translate the error to an ErrorException and delegate it to the
         // exception handler:
-        $this->handleException(
-            new ErrorException($errorMessage, $errorLevel, null, $errorFile, $errorLine)
+        $exception = $this->errorExceptionFactory->create(
+            $errorLevel,
+            $errorMessage,
+            $errorFile,
+            $errorLine,
+            $errorContext
         );
+
+        $this->handleException($exception);
     }
 }
