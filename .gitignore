@@ -8,7 +8,7 @@ composer.phar
 
 # phar-generation specific
 box.json
-ahtletic.phar
+athletic.phar
 
 # OS generated files
 .DS_Store
