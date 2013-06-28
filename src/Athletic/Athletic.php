@@ -11,6 +11,7 @@ namespace Athletic;
 use Athletic\Common\DICBuilder;
 use Athletic\Discovery\RecursiveFileLoader;
 use Athletic\Runners\SuiteRunner;
+use Athletic\Common\ErrorHandlerInterface;
 use Pimple;
 
 /**
@@ -64,7 +65,7 @@ class Athletic extends Pimple
 
     private function setupErrorHandler()
     {
-        /** @var Athletic\Common\ErrorHandlerInterace $handler */
+        /** @var ErrorHandlerInterface $handler */
         $handler = $this['errorHandler'];
 
         set_exception_handler(array($handler, 'handleException'));
