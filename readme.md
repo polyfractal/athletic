@@ -153,7 +153,7 @@ That's it!  Now you are ready to run the benchmark.
 A benchmark test is run from the command line:
 
 ```bash
-$ php ./Athletic/bootstrap.php -p /home/ProjectDir/benchmarks/ -b /home/ProjectDir/vendor/autoload.php
+$ php ./vendor/bin/athletic -p /home/ProjectDir/benchmarks/ -b /home/ProjectDir/vendor/autoload.php
 ```
 
 The tool has a few flags that can be set:
@@ -171,7 +171,7 @@ The tool has a few flags that can be set:
 So what does the output of a benchmark look like?
 
 ```
-$ php ./Athletic/bootstrap.php -p /home/ProjectDir/benchmarks/ -b /home/ProjectDir/vendor/autoload.php
+$ php ./vendor/bin/athletic -p /home/ProjectDir/benchmarks/ -b /home/ProjectDir/vendor/autoload.php
 
 Vendor\Package\Benchmarks\Indexing\IndexingEvent
     Method Name             Iterations    Average Time      Ops/second
