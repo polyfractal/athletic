@@ -26,5 +26,6 @@
       "Athletic": "src/",
       "Athletic/Tests": "tests/"
     }
-  }
+  },
+  "bin" : [ "bin/athletic" ]
 }
