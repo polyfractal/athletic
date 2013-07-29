@@ -61,6 +61,7 @@ testClass
     testName                      : [Baseline] [5         ] [5.0000000000000] [5.00000]
 
 
+
 EOF;
 
         $this->assertEquals($expected, $ret);
@@ -155,6 +156,7 @@ testClass
     testName                      :            [5         ] [3.0000000000000] [5.00000] [60.00%]
 
 
+
 EOF;
 
         $this->assertEquals($expected, $ret);
@@ -241,17 +243,20 @@ testClass
     ------------------------------  ----------  ------------ --------------   ---------  ---------
     testName                      : [Baseline] [5         ] [5.0000000000000] [5.00000]
 
+
 testClass2
   Group2
     Method Name                                 Iterations    Average Time      Ops/s    Relative
     ------------------------------  ----------  ------------ --------------   ---------  ---------
     testName                      : [Baseline] [5         ] [5.0000000000000] [5.00000]
 
+
 testClass3
   Group3
     Method Name                                 Iterations    Average Time      Ops/s    Relative
     ------------------------------  ----------  ------------ --------------   ---------  ---------
     testName                      : [Baseline] [5         ] [5.0000000000000] [5.00000]
+
 
 
 EOF;
