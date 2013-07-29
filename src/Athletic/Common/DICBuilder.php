@@ -136,8 +136,17 @@ class DICBuilder
 
     private function setupFormatter()
     {
-        $this->athletic['formatterClass'] = '\Athletic\Formatters\DefaultFormatter';
-        $this->athletic['formatter']      = function ($dic) {
+        /** @var CmdLine $cmdLine */
+        $cmdLine   = $this->athletic['cmdLine'];
+        $formatter = $cmdLine->getFormatter();
+
+        if (isset($formatter) === true) {
+            $this->athletic['formatterClass'] = "\\Athletic\\Formatters\\$formatter";
+        } else {
+            $this->athletic['formatterClass'] = '\Athletic\Formatters\DefaultFormatter';
+        }
+
+        $this->athletic['formatter'] = function ($dic) {
             return new $dic['formatterClass']();
         };
     }
@@ -169,11 +178,11 @@ class DICBuilder
         $this->athletic['errorException']      = function ($dic) {
             return function ($errorLevel, $errorMessage, $errorFile, $errorLine, $errorContext) use ($dic) {
                 return new $dic['errorExceptionClass'](
-                    $errorLevel,
                     $errorMessage,
+                    0,
+                    $errorLevel,
                     $errorFile,
-                    $errorLine,
-                    $errorContext
+                    $errorLine
                 );
             };
         };

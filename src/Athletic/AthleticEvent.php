@@ -94,7 +94,7 @@ abstract class AthleticEvent
         foreach ($methods as $methodName => $annotations) {
             if (isset($annotations['iterations']) === true) {
                 $this->setUp();
-                $results[] = $this->runMethodBenchmark($methodName, $annotations['iterations']);
+                $results[] = $this->runMethodBenchmark($methodName, $annotations);
                 $this->tearDown();
             }
         }
@@ -104,12 +104,13 @@ abstract class AthleticEvent
 
     /**
      * @param string $method
-     * @param int    $iterations
+     * @param int    $annotations
      *
      * @return MethodResults
      */
-    private function runMethodBenchmark($method, $iterations)
+    private function runMethodBenchmark($method, $annotations)
     {
+        $iterations = $annotations['iterations'];
         $avgCalibration = $this->getCalibrationTime($iterations);
 
         $results = array();
@@ -117,7 +118,11 @@ abstract class AthleticEvent
             $results[$i] = $this->timeMethod($method) - $avgCalibration;
         }
 
-        return $this->methodResultsFactory->create($method, $results, $iterations);
+        $finalResults = $this->methodResultsFactory->create($method, $results, $iterations);
+
+        $this->setOptionalAnnotations($finalResults, $annotations);
+
+        return $finalResults;
 
     }
 
@@ -154,6 +159,22 @@ abstract class AthleticEvent
     private function emptyCalibrationMethod()
     {
 
+    }
+
+
+    /**
+     * @param MethodResults $finalResults
+     * @param array         $annotations
+     */
+    private function setOptionalAnnotations(MethodResults $finalResults, $annotations)
+    {
+        if (isset($annotations['group']) === true) {
+            $finalResults->setGroup($annotations['group']);
+        }
+
+        if (isset($annotations['baseline']) === true) {
+            $finalResults->setBaseline();
+        }
     }
 
 }

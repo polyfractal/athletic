@@ -21,6 +21,8 @@ class MethodResults
     public $max;
     public $min;
     public $ops;
+    public $group;
+    public $baseline = false;
 
 
     public function __construct($name, $results, $iterations)
@@ -33,5 +35,20 @@ class MethodResults
         $this->max        = max($results);
         $this->min        = min($results);
         $this->ops        = $iterations / $this->sum;
+        $this->baseline   = false;
+    }
+
+
+    /**
+     * @param string $group
+     */
+    public function setGroup($group)
+    {
+        $this->group = $group;
+    }
+
+    public function setBaseline()
+    {
+        $this->baseline = true;
     }
 }

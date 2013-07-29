@@ -46,6 +46,10 @@ class CmdLine
         $cmdArgs->flag('b')
         ->aka('bootstrap')
         ->describedAs('Path to bootstrap file for your project');
+
+        $cmdArgs->flag('f')
+        ->aka('formatter')
+        ->describedAs('User-configured formatter to use instead of DefaultFormatter');
     }
 
 
@@ -55,5 +59,14 @@ class CmdLine
     public function getSuitePath()
     {
         return $this->cmdArgs['path'];
+    }
+
+
+    /**
+     * @return mixed
+     */
+    public function getFormatter()
+    {
+        return $this->cmdArgs['formatter'];
     }
 }

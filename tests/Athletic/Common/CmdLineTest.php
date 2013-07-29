@@ -36,7 +36,7 @@ class CmdLineTest extends \PHPUnit_Framework_TestCase
     {
         $mockCommand = m::mock('\Commando\Command');
         $mockCommand->shouldReceive('option->require->aka->describedAs')->once();
-        $mockCommand->shouldReceive('flag->aka->describedAs')->once();
+        $mockCommand->shouldReceive('flag->aka->describedAs')->twice();
         $mockCommand->shouldReceive('offsetGet')->once()->with('bootstrap')->andReturnNull();
 
         $cmdLine = new CmdLine($mockCommand);
@@ -58,7 +58,7 @@ class CmdLineTest extends \PHPUnit_Framework_TestCase
 
         $mockCommand = m::mock('\Commando\Command');
         $mockCommand->shouldReceive('option->require->aka->describedAs')->once();
-        $mockCommand->shouldReceive('flag->aka->describedAs')->once();
+        $mockCommand->shouldReceive('flag->aka->describedAs')->twice();
         $mockCommand->shouldReceive('offsetGet')->twice()->with('bootstrap')->andReturn($path);
 
         $cmdLine = new CmdLine($mockCommand);
