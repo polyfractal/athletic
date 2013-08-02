@@ -70,7 +70,6 @@ class Athletic extends Pimple
         $handler = $this['errorHandler'];
 
         set_exception_handler(array($handler, 'handleException'));
-        set_error_handler(array($handler, 'handleError'));
     }
 }
 
