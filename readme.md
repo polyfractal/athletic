@@ -162,7 +162,10 @@ The tool has a few flags that can be set:
 | ------ | --------- | -------- | ----------- |
 | -p | --path      | Yes | Specifies the path to the Events to benchmark.  Will recursively load all files/classes that extend `AthleticEvent`  |
 | -b | --bootstrap | | Sets the path to an optional bootstrap file which is included before anything else.  This is often used to include an autoloader for your project. |
+| -f | --formatter | | User-configured formatter to use instead of DefaultFormatter |
 | -h | --help      | | Help screen with options and their descriptions |
+
+
 
 **Note:** Athletic is intended to be used as a single Phar archive, but that process has not been built yet.  Soon!
 
