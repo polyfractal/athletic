@@ -93,9 +93,7 @@ abstract class AthleticEvent
 
         foreach ($methods as $methodName => $annotations) {
             if (isset($annotations['iterations']) === true) {
-                $this->setUp();
                 $results[] = $this->runMethodBenchmark($methodName, $annotations);
-                $this->tearDown();
             }
         }
         return $results;
@@ -115,7 +113,9 @@ abstract class AthleticEvent
 
         $results = array();
         for ($i = 0; $i < $iterations; ++$i) {
+            $this->setUp();
             $results[$i] = $this->timeMethod($method) - $avgCalibration;
+            $this->tearDown();
         }
 
         $finalResults = $this->methodResultsFactory->create($method, $results, $iterations);
