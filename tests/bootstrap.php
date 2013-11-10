@@ -13,5 +13,7 @@ if (!file_exists(dirname(__DIR__) . '/composer.lock')) {
         . "See http://getcomposer.org for help with installing composer\n");
 }
 
-// Include the composer autoloader
+/* @var $autoloader \Composer\Autoload\ClassLoader */
 $autoloader = require_once(dirname(__DIR__) . '/vendor/autoload.php');
+
+$autoloader->add('Athletic', __DIR__);
