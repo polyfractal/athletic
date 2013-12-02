@@ -36,7 +36,7 @@ class RunsCounter extends AthleticEvent
     /**
      * {@inheritDoc}
      */
-    public function setUp()
+    public function setUp($method, $iteration, $iterationCount)
     {
         $this->setUps += 1;
     }
@@ -44,7 +44,7 @@ class RunsCounter extends AthleticEvent
     /**
      * {@inheritDoc}
      */
-    public function tearDown()
+    public function tearDown($method, $iterationsCount)
     {
         $this->tearDowns += 1;
     }
