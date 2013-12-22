@@ -11,7 +11,7 @@
     backupGlobals="false"
     syntaxCheck="true"
 >
-    <testsuite name="ProxyManager tests">
+    <testsuite name="Athletic tests">
         <directory>./tests/Athletic</directory>
     </testsuite>
     <filter>
