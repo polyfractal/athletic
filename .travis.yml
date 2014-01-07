@@ -1,14 +1,20 @@
 language: php
 php:
-  - "5.5"
-  - "5.4"
-  - "5.3"
+  - 5.5
+  - 5.4
+  - 5.3
+  - hhvm
 
 before_script:
-  - composer install --dev
+  - composer install --dev --prefer-source
   - mkdir -p build/logs
 
-script: phpunit --bootstrap tests/bootstrap.php --no-configuration --coverage-clover build/logs/clover.xml tests
+script:
+  - ./vendor/bin/phpunit --coverage-clover ./build/logs/clover.xml
 
 after_script:
  - php vendor/bin/coveralls -v
+
+matrix:
+  allow_failures:
+    - php: hhvm

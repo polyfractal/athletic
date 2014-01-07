@@ -1,3 +1,6 @@
+#phpunit related
+phpunit.xml
+
 #composer related
 composer.lock
 vendor/

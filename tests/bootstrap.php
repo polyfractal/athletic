@@ -5,15 +5,23 @@
  * Time: 4:48 PM
  */
 
-error_reporting(E_ALL | E_STRICT);
+ini_set('error_reporting', E_ALL | E_STRICT);
 
-// Ensure that composer has installed all dependencies
-if (!file_exists(dirname(__DIR__) . '/composer.lock')) {
-    die("Dependencies must be installed using composer:\n\nphp composer.phar install --dev\n\n"
-        . "See http://getcomposer.org for help with installing composer\n");
+$files = array(__DIR__ . '/../vendor/autoload.php', __DIR__ . '/../../../autoload.php');
+
+foreach ($files as $file) {
+    if (file_exists($file)) {
+        $loader = require $file;
+
+        break;
+    }
 }
 
-/* @var $autoloader \Composer\Autoload\ClassLoader */
-$autoloader = require_once(dirname(__DIR__) . '/vendor/autoload.php');
+if (! isset($loader)) {
+    throw new RuntimeException('vendor/autoload.php could not be found. Did you run `php composer.phar install`?');
+}
 
-$autoloader->add('Athletic', __DIR__);
+/* @var $loader \Composer\Autoload\ClassLoader */
+$loader->add('Athletic\\', __DIR__);
+
+unset($files, $file, $loader);
