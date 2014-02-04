@@ -28,7 +28,7 @@ abstract class AthleticEvent
     }
 
 
-    protected function classSetUp()
+    protected function classSetUp(array $methods)
     {
 
     }
@@ -39,14 +39,23 @@ abstract class AthleticEvent
 
     }
 
+    protected function setUpMethod($method, $iterationsCount)
+    {
 
-    protected function setUp()
+    }
+
+    protected function tearDownMethod($method, $iterationsCount)
+    {
+
+    }
+
+    protected function setUp($method, $currentIteration, $iterationsCount)
     {
 
     }
 
 
-    protected function tearDown()
+    protected function tearDown($method, $iterationsCount)
     {
 
     }
@@ -74,7 +83,7 @@ abstract class AthleticEvent
             $methodAnnotations[$methodReflector->getName()] = new Annotations($methodReflector);
         }
 
-        $this->classSetUp();
+        $this->classSetUp($methodAnnotations);
         $results = $this->runBenchmarks($methodAnnotations);
         $this->classTearDown();
 
@@ -87,7 +96,7 @@ abstract class AthleticEvent
      *
      * @return MethodResults[]
      */
-    private function runBenchmarks($methods)
+    protected function runBenchmarks($methods)
     {
         $results = array();
 
@@ -106,17 +115,19 @@ abstract class AthleticEvent
      *
      * @return MethodResults
      */
-    private function runMethodBenchmark($method, $annotations)
+    protected function runMethodBenchmark($method, $annotations)
     {
         $iterations = $annotations['iterations'];
         $avgCalibration = $this->getCalibrationTime($iterations);
 
         $results = array();
+        $this->setUpMethod($method, $iterations);
         for ($i = 0; $i < $iterations; ++$i) {
-            $this->setUp();
+            $this->setUp($method, $i, $iterations);
             $results[$i] = $this->timeMethod($method) - $avgCalibration;
-            $this->tearDown();
+            $this->tearDown($method, $iterations);
         }
+        $this->tearDownMethod($method, $iterations);
 
         $finalResults = $this->methodResultsFactory->create($method, $results, $iterations);
 
@@ -132,7 +143,7 @@ abstract class AthleticEvent
      *
      * @return mixed
      */
-    private function timeMethod($method)
+    protected function timeMethod($method)
     {
         $start = microtime(true);
         $this->$method();
@@ -145,7 +156,7 @@ abstract class AthleticEvent
      *
      * @return float
      */
-    private function getCalibrationTime($iterations)
+    protected function getCalibrationTime($iterations)
     {
         $emptyCalibrationMethod = 'emptyCalibrationMethod';
         $resultsCalibration     = array();
@@ -156,7 +167,7 @@ abstract class AthleticEvent
     }
 
 
-    private function emptyCalibrationMethod()
+    protected function emptyCalibrationMethod()
     {
 
     }
@@ -166,7 +177,7 @@ abstract class AthleticEvent
      * @param MethodResults $finalResults
      * @param array         $annotations
      */
-    private function setOptionalAnnotations(MethodResults $finalResults, $annotations)
+    protected function setOptionalAnnotations(MethodResults $finalResults, $annotations)
     {
         if (isset($annotations['group']) === true) {
             $finalResults->setGroup($annotations['group']);
