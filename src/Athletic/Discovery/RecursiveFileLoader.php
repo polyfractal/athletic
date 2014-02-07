@@ -29,7 +29,7 @@ class RecursiveFileLoader
     public function __construct(ParserFactory $parserFactory, $path)
     {
         $this->parserFactory = $parserFactory;
-        $files               = $this->scanDirectory($path);
+        $files               = (is_file($path)) ? array($path) : $this->scanDirectory($path);
         $parsedPHPFiles      = $this->parsePHPFiles($files);
         $athleticClasses     = $this->getAthleticClasses($parsedPHPFiles);
 
