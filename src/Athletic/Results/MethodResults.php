@@ -34,7 +34,7 @@ class MethodResults
         $this->avg        = ($this->sum / count($results));
         $this->max        = max($results);
         $this->min        = min($results);
-        $this->ops        = $iterations / $this->sum;
+        $this->ops        = ($this->sum == 0.0) ? NAN : ($iterations / $this->sum);
         $this->baseline   = false;
     }
 
