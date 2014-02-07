@@ -166,4 +166,48 @@ class RecursiveFileLoaderTest extends PHPUnit_Framework_TestCase
         $this->assertEmpty($classes);
     }
 
+    /**
+     * Checks if the loader accepts a file path as target.
+     */
+    public function testLoadClassFromFile()
+    {
+        $class = '<?php namespace Vendor\Package; class Test extends \Athletic\AthleticEvent {}';
+
+        $structure = array(
+            'src' => array(
+                'Package' => array(
+                    'Test.php' => $class
+                )
+            )
+        );
+
+        vfsStream::create($structure, $this->root);
+        $path = vfsStream::url('root/src/Package/Test.php');
+
+        $mockParser = m::mock('\Athletic\Discovery\Parser')
+            ->shouldReceive('isAthleticEvent')
+            ->once()
+            ->andReturn(true)
+            ->getMock()
+            ->shouldReceive('getFQN')
+            ->once()
+            ->andReturn('Vendor\Package\Test')
+            ->getMock();
+
+        $mockParserFactory = m::mock('\Athletic\Factories\ParserFactory')
+            ->shouldReceive('create')
+            ->once()
+            ->with('vfs://root/src/Package/Test.php')
+            ->andReturn($mockParser)
+            ->getMock();
+
+        $fileLoader = new RecursiveFileLoader($mockParserFactory, $path);
+        $classes    = $fileLoader->getClasses();
+
+        $expectedClasses = array(
+            'Vendor\Package\Test'
+        );
+        $this->assertEquals($expectedClasses, $classes);
+    }
+
 }
