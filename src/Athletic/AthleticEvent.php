@@ -102,7 +102,7 @@ abstract class AthleticEvent
 
     /**
      * @param string $method
-     * @param int    $annotations
+     * @param Annotations $annotations
      *
      * @return MethodResults
      */
