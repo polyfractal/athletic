@@ -8,6 +8,7 @@
 namespace Athletic;
 
 use Athletic\Results\MethodResults;
+use Athletic\TestAsset\MaxRuntimeEvent;
 use Athletic\TestAsset\RunsCounter;
 use PHPUnit_Framework_TestCase;
 
@@ -62,4 +63,32 @@ class AthleticEventTest extends PHPUnit_Framework_TestCase
         $this->assertSame(5, $event->setUps);
         $this->assertSame(5, $event->tearDowns);
     }
+
+    /**
+     * Ensures that a benchmark is aborted if the annotated maximal runtime is reached.
+     */
+    public function testBenchmarkIsAbortedIfMaxRuntimeIsReached()
+    {
+        $event = new MaxRuntimeEvent();
+        $event->setMethodFactory($this->resultsFactory);
+
+        $event->run();
+
+        $this->assertEquals(1, $event->iterationAndRuntimeRuns);
+    }
+
+    /**
+     * Ensures that a benchmark is executed if it defines only a maximal runtime
+     * and no number of iterations.
+     */
+    public function testBenchmarkIsExecutedIfOnlyRuntimeRestrictionIsSpecified()
+    {
+        $event = new MaxRuntimeEvent();
+        $event->setMethodFactory($this->resultsFactory);
+
+        $event->run();
+
+        $this->assertEquals(1, $event->onlyRuntimeRuns);
+    }
+
 }
