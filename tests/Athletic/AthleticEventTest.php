@@ -78,6 +78,24 @@ class AthleticEventTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * Ensures that the real number of iterations is shown in the result of a benchmark with
+     * runtime restriction (this does not have to be equal to the annotated number of iterations).
+     */
+    public function testResultOfBenchmarkWithRuntimeRestrictionContainsCorrectNumberOfIterations()
+    {
+        $event = new MaxRuntimeEvent();
+        $event->setMethodFactory($this->resultsFactory);
+
+        $results = $event->run();
+
+        $this->assertInternalType('array', $results);
+        /* @var \Athletic\Results\MethodResults */
+        $result = current($results);
+        $this->assertInstanceOf('Athletic\Results\MethodResults', $result);
+        $this->assertEquals(1, $result->iterations);
+    }
+
+    /**
      * Ensures that a benchmark is executed if it defines only a maximal runtime
      * and no number of iterations.
      */
