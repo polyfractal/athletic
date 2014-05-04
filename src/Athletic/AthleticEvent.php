@@ -92,7 +92,7 @@ abstract class AthleticEvent
         $results = array();
 
         foreach ($methods as $methodName => $annotations) {
-            if (isset($annotations['iterations']) === true) {
+            if (isset($annotations['iterations']) || isset($annotations['maxRuntime'])) {
                 $results[] = $this->runMethodBenchmark($methodName, $annotations);
             }
         }
@@ -108,14 +108,19 @@ abstract class AthleticEvent
      */
     private function runMethodBenchmark($method, $annotations)
     {
-        $iterations = $annotations['iterations'];
-        $avgCalibration = $this->getCalibrationTime($iterations);
+        $iterations = isset($annotations['iterations']) ? $annotations['iterations'] : PHP_INT_MAX;
+        $maxRuntime = isset($annotations['maxRuntime']) ? $annotations['maxRuntime'] : PHP_INT_MAX;
+        $avgCalibration = $this->getCalibrationTime(min($iterations, 1000));
 
+        $start = microtime(true);
         $results = array();
         for ($i = 0; $i < $iterations; ++$i) {
             $this->setUp();
             $results[$i] = $this->timeMethod($method) - $avgCalibration;
             $this->tearDown();
+            if ((microtime(true) - $start) >= $maxRuntime) {
+                break;
+            }
         }
 
         $finalResults = $this->methodResultsFactory->create($method, $results, $iterations);
