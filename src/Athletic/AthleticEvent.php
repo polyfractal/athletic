@@ -123,7 +123,7 @@ abstract class AthleticEvent
             }
         }
 
-        $finalResults = $this->methodResultsFactory->create($method, $results, $iterations);
+        $finalResults = $this->methodResultsFactory->create($method, $results, count($results));
 
         $this->setOptionalAnnotations($finalResults, $annotations);
 
