@@ -18,6 +18,14 @@ use zpt\anno\Annotations;
  */
 abstract class AthleticEvent
 {
+
+    /**
+     * The maximal number of iterations that is used for calibration.
+     *
+     * @var integer
+     */
+    const MAX_CALIBRATION_ITERATIONS = 1000;
+
     /** @var  MethodResultsFactory */
     private $methodResultsFactory;
 
@@ -110,7 +118,7 @@ abstract class AthleticEvent
     {
         $iterations = isset($annotations['iterations']) ? $annotations['iterations'] : PHP_INT_MAX;
         $maxRuntime = isset($annotations['maxRuntime']) ? $annotations['maxRuntime'] : PHP_INT_MAX;
-        $avgCalibration = $this->getCalibrationTime(min($iterations, 1000));
+        $avgCalibration = $this->getCalibrationTime(min($iterations, static::MAX_CALIBRATION_ITERATIONS));
 
         $start = microtime(true);
         $results = array();
