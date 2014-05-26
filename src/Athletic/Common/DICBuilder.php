@@ -141,7 +141,11 @@ class DICBuilder
         $formatter = $cmdLine->getFormatter();
 
         if (isset($formatter) === true) {
-            $this->athletic['formatterClass'] = "\\Athletic\\Formatters\\$formatter";
+            if (!class_exists($formatter)) {
+                // Use a built-in formatter.
+                $formatter =  "\\Athletic\\Formatters\\$formatter";
+            }
+            $this->athletic['formatterClass'] = $formatter;
         } else {
             $this->athletic['formatterClass'] = '\Athletic\Formatters\DefaultFormatter';
         }
