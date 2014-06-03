@@ -9,15 +9,14 @@
       "name": "Zachary Tong"
     }
   ],
-  "minimum-stability": "dev",
   "require": {
     "php": ">=5.3.9",
     "zeptech/annotations": "1.1.*",
     "nategood/commando": "0.2.1",
-    "pimple/pimple": "1.*"
+    "pimple/pimple": ">=1.0,<3.0"
   },
   "require-dev": {
-    "phpunit/phpunit": "~3.8",
+    "phpunit/phpunit": "~4.0",
     "mikey179/vfsStream": "1.2.*",
     "mockery/mockery": "0.8.*",
     "satooshi/php-coveralls": "0.6.*"
