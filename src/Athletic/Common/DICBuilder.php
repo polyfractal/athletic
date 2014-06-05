@@ -213,11 +213,13 @@ class DICBuilder
     {
         $formatterInfo = new \ReflectionClass($formatterClass);
         if (!$formatterInfo->implementsInterface('Athletic\Formatters\FormatterInterface')) {
-            throw new \InvalidArgumentException();
+            $message = sprintf('%s does not implement the formatter interface.', $formatterClass);
+            throw new \InvalidArgumentException($message);
         }
         $constructor = $formatterInfo->getConstructor();
         if ($constructor !== null && $constructor->getNumberOfRequiredParameters() > 0) {
-            throw new \InvalidArgumentException();
+            $message = sprintf('Formatter %s must provide a constructor without required parameters.', $formatterClass);
+            throw new \InvalidArgumentException($message);
         }
     }
 }
