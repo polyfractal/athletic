@@ -149,14 +149,7 @@ class DICBuilder
         } else {
             $this->athletic['formatterClass'] = '\Athletic\Formatters\DefaultFormatter';
         }
-        $formatterInfo = new \ReflectionClass($this->athletic['formatterClass']);
-        if (!$formatterInfo->implementsInterface('Athletic\Formatters\FormatterInterface')) {
-            throw new \InvalidArgumentException();
-        }
-        $constructor = $formatterInfo->getConstructor();
-        if ($constructor !== null && $constructor->getNumberOfRequiredParameters() > 0) {
-            throw new \InvalidArgumentException();
-        }
+        $this->assertValidFormatterClass($this->athletic['formatterClass']);
 
         $this->athletic['formatter'] = function ($dic) {
             return new $dic['formatterClass']();
@@ -208,5 +201,23 @@ class DICBuilder
         $this->athletic['errorHandler']      = function ($dic) {
             return new $dic['errorHandlerClass']($dic['command'], $dic['errorExceptionFactory']);
         };
+    }
+
+    /**
+     * Asserts that the provided class can be used as output formatter.
+     *
+     * @param string $formatterClass
+     * @throws \InvalidArgumentException If the class doe not meet the requirements (interface and empty constructor)
+     */
+    private function assertValidFormatterClass($formatterClass)
+    {
+        $formatterInfo = new \ReflectionClass($formatterClass);
+        if (!$formatterInfo->implementsInterface('Athletic\Formatters\FormatterInterface')) {
+            throw new \InvalidArgumentException();
+        }
+        $constructor = $formatterInfo->getConstructor();
+        if ($constructor !== null && $constructor->getNumberOfRequiredParameters() > 0) {
+            throw new \InvalidArgumentException();
+        }
     }
 }
