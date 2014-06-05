@@ -149,6 +149,14 @@ class DICBuilder
         } else {
             $this->athletic['formatterClass'] = '\Athletic\Formatters\DefaultFormatter';
         }
+        $formatterInfo = new \ReflectionClass($this->athletic['formatterClass']);
+        if (!$formatterInfo->implementsInterface('Athletic\Formatters\FormatterInterface')) {
+            throw new \InvalidArgumentException();
+        }
+        $constructor = $formatterInfo->getConstructor();
+        if ($constructor !== null && $constructor->getNumberOfRequiredParameters() > 0) {
+            throw new \InvalidArgumentException();
+        }
 
         $this->athletic['formatter'] = function ($dic) {
             return new $dic['formatterClass']();
