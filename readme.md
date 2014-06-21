@@ -204,6 +204,27 @@ If the goal is to benchmark the initial calculation, it makes sense to place the
 
 If the goal, however, is to benchmark the entire process (initial calculation and subsequent caching), then it makes more sense to instantiate the object in classSetUp() so that it is only built once.
 
+### Restricting Runtime
+
+If your benchmarks are running on different hardware or if your are using a generic benchmark
+to test implementations with really different performance characteristics, then you might want
+to restrict the runtime to ensure that you do not have to wait too long for the results.
+
+In this case you can use the `@maxRuntime` annotation with a number of seconds to restrict  the runtime of a benchmark method.
+
+In the following example, the execution of the `slowIndexingAlgo()` stops once the desired number of iterations or a runtime of 5 minutes is reached:
+
+```php
+    /**
+     * @iterations 10000
+     * @maxRuntime 300
+     */
+    public function slowIndexingAlgo()
+    {
+        $this->slow->index($this->data);
+    }
+```
+
 ### Calibration
 
 Athletic uses Reflection and variable functions to invoke the methods in your Event.  Because there is some internal overhead to variable functions, Athletic performs a "calibration" step before each iteration.  This step calls an empty calibration method and times how long it takes.  This time is then subtracted from the iterations total time, providing a more accurate total time.
