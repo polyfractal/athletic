@@ -7,9 +7,6 @@
 
 namespace Athletic\Publishers;
 
-
-use Athletic\Formatters\FormatterInterface;
-
 /**
  * Class PublisherInterface
  * @package Athletic\Publishers
@@ -17,13 +14,7 @@ use Athletic\Formatters\FormatterInterface;
 interface PublisherInterface
 {
     /**
-     * @param FormatterInterface $formatter
-     */
-    public function __construct(FormatterInterface $formatter);
-
-
-    /**
-     * @param array $results
+     * @param \Athletic\Results\ClassResults $results
      *
      * @return mixed
      */
