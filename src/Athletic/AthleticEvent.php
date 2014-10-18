@@ -92,8 +92,55 @@ abstract class AthleticEvent
         $results = array();
 
         foreach ($methods as $methodName => $annotations) {
-            if (isset($annotations['iterations']) === true) {
-                $results[] = $this->runMethodBenchmark($methodName, $annotations);
+            if (substr($methodName, 0, 7) === 'perform') {
+                if ($annotations['dataProvider']) {
+                    $providerMethod = $annotations['dataProvider'];
+
+                    if (!method_exists($this, $providerMethod)) {
+                        throw new \Exception(sprintf(
+                            'Provider method "%s" does not exist',
+                            $providerMethod
+                        ));
+                    }
+
+                    $dataSets = $this->$providerMethod();
+
+                    if (!is_array($dataSets)) {
+                        throw new \Exception(sprintf(
+                            'Data provider method "%s" must return an array',
+                            $providerMethod
+                        ));
+                    }
+
+                    $refl = new \ReflectionClass($this);
+                    $method = $refl->getMethod($methodName);
+                    $args = $method->getParameters();
+
+                    $newDataSets = array();
+                    foreach ($dataSets as $dataSet) {
+                        $newDataSet = array();
+                        foreach ($dataSet as $i => $value) {
+                            if (isset($args[$i])) {
+                                $newDataSet[$args[$i]->name] = $value;
+                            }
+                        }
+                        $newDataSets[] = $newDataSet;
+                    }
+                    $dataSets = $newDataSets;
+
+                } else {
+                    $dataSets = array(
+                        array()
+                    );
+                }
+
+                foreach ($dataSets as $dataSet) {
+                    $iterationCounts = (array) $annotations['iterations'];
+
+                    foreach ($iterationCounts as $iterationCount) {
+                        $results[] = $this->runMethodBenchmark($methodName, $dataSet, $annotations, $iterationCount);
+                    }
+                }
             }
         }
         return $results;
@@ -106,19 +153,18 @@ abstract class AthleticEvent
      *
      * @return MethodResults
      */
-    private function runMethodBenchmark($method, $annotations)
+    private function runMethodBenchmark($method, $dataSet, $annotations, $iterationCount)
     {
-        $iterations = $annotations['iterations'];
-        $avgCalibration = $this->getCalibrationTime($iterations);
+        $avgCalibration = $this->getCalibrationTime($iterationCount, $dataSet);
 
         $results = array();
-        for ($i = 0; $i < $iterations; ++$i) {
+        for ($i = 0; $i < $iterationCount; ++$i) {
             $this->setUp();
-            $results[$i] = $this->timeMethod($method) - $avgCalibration;
+            $results[$i] = $this->timeMethod($method, $dataSet) - $avgCalibration;
             $this->tearDown();
         }
 
-        $finalResults = $this->methodResultsFactory->create($method, $results, $iterations);
+        $finalResults = $this->methodResultsFactory->create($method, $results, $iterationCount, $dataSet);
 
         $this->setOptionalAnnotations($finalResults, $annotations);
 
@@ -132,10 +178,10 @@ abstract class AthleticEvent
      *
      * @return mixed
      */
-    private function timeMethod($method)
+    private function timeMethod($method, $dataSet)
     {
         $start = microtime(true);
-        $this->$method();
+        call_user_func_array(array($this, $method), $dataSet);
         return microtime(true) - $start;
     }
 
@@ -145,12 +191,12 @@ abstract class AthleticEvent
      *
      * @return float
      */
-    private function getCalibrationTime($iterations)
+    private function getCalibrationTime($iterations, $dataSet)
     {
         $emptyCalibrationMethod = 'emptyCalibrationMethod';
         $resultsCalibration     = array();
         for ($i = 0; $i < $iterations; ++$i) {
-            $resultsCalibration[$i] = $this->timeMethod($emptyCalibrationMethod);
+            $resultsCalibration[$i] = $this->timeMethod($emptyCalibrationMethod, $dataSet);
         }
         return array_sum($resultsCalibration) / count($resultsCalibration);
     }

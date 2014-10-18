@@ -24,8 +24,8 @@ class MethodResultsFactory extends AbstractFactory
      *
      * @return MethodResults
      */
-    public function create($name, $results, $iterations)
+    public function create($name, $results, $iterations, $dataSet)
     {
-        return $this->container['methodResults']($name, $results, $iterations);
+        return $this->container['methodResults']($name, $results, $iterations, $dataSet);
     }
 }

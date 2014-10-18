@@ -31,22 +31,27 @@ class DefaultFormatter implements FormatterInterface
             $returnString .= $result->getClassName() . "\n";
 
             $longest = 0;
+            $longestDataSet = 0;
             /** @var MethodResults $methodResult */
             foreach ($result as $methodResult) {
-                if (strlen($methodResult->methodName) > $longest) {
-                    $longest = strlen($methodResult->methodName);
+                if (strlen($methodResult->getFullMethodName()) > $longest) {
+                    $longest = strlen($methodResult->getFullMethodName());
+                }
+                if (strlen($methodResult->getDataSetAsString()) > $longestDataSet) {
+                    $longestDataSet = strlen($methodResult->getDataSetAsString());
                 }
             }
             $returnString .= '    ' . str_pad(
                     'Method Name',
                     $longest
-                ) . "   Iterations    Average Time      Ops/second\n";
+                ) . "  Iterations   Average Time     Ops/second\n";
 
-            $returnString .= '    ' . str_repeat('-', $longest) . "  ------------  --------------    -------------\n";
+            $returnString .= '    ' . str_repeat('-', $longest) . "  ------------ ---------------- -------------\n";
 
             foreach ($result as $methodResult) {
 
-                $method     = str_pad($methodResult->methodName, $longest);
+                $method     = str_pad($methodResult->getFullMethodName(), $longest);
+                $iterations = str_pad(number_format($methodResult->iterations), 10);
                 $iterations = str_pad(number_format($methodResult->iterations), 10);
                 $avg        = str_pad(number_format($methodResult->avg, 13), 13);
                 $ops        = str_pad(number_format($methodResult->ops, 5), 7);
