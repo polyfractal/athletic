@@ -23,9 +23,10 @@ class MethodResults
     public $ops;
     public $group;
     public $baseline = false;
+    public $dataSet;
 
 
-    public function __construct($name, $results, $iterations)
+    public function __construct($name, $results, $iterations, $dataSet)
     {
         $this->methodName = $name;
         $this->results    = $results;
@@ -36,8 +37,22 @@ class MethodResults
         $this->min        = min($results);
         $this->ops        = ($this->sum == 0.0) ? NAN : ($iterations / $this->sum);
         $this->baseline   = false;
+        $this->dataSet    = $dataSet;
     }
 
+    public function getDataSetAsString()
+    {
+        $res = array();
+        foreach ($this->dataSet as $name => $value) {
+            $res[] = $name . '=' . $value;
+        }
+        return implode(',', $res);
+    }
+
+    public function getFullMethodName()
+    {
+        return substr($this->methodName, 7) . '(' . $this->getDataSetAsString() .')';
+    }
 
     /**
      * @param string $group

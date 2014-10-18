@@ -115,8 +115,8 @@ class DICBuilder
 
         $this->athletic['methodResultsClass'] = '\Athletic\Results\MethodResults';
         $this->athletic['methodResults']      = function ($dic) {
-            return function ($name, $results, $iterations) use ($dic) {
-                return new $dic['methodResultsClass']($name, $results, $iterations);
+            return function ($name, $results, $iterations, $dataSet) use ($dic) {
+                return new $dic['methodResultsClass']($name, $results, $iterations, $dataSet);
             };
         };
     }
