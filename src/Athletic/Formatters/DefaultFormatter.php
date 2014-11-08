@@ -74,7 +74,7 @@ class DefaultFormatter implements FormatterInterface
                 $returnString .= sprintf(
                     "    %s: [%s] [%s] [%s]\n",
                     str_pad($row[0], $lengths[0]),
-                    str_pad($row[1], $lengths[1]),
+                    str_pad($row[1], $lengths[1], ' ', STR_PAD_LEFT),
                     str_pad($row[2], $lengths[2]),
                     str_pad($row[3], $lengths[3])
                 );

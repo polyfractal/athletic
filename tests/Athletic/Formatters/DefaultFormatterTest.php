@@ -55,7 +55,7 @@ class DefaultFormatterTest extends \PHPUnit_Framework_TestCase
 testClass
     Method Name   Iterations   Average Time      Ops/second
     ------------ ------------ ----------------- ------------
-    testName   : [5         ] [5.0000000000000] [5.00000   ]
+    testName   : [         5] [5.0000000000000] [5.00000   ]
 
 
 
@@ -99,9 +99,9 @@ EOF;
 testClass
     Method Name   Iterations   Average Time      Ops/second
     ------------ ------------ ----------------- ------------
-    testName   : [5         ] [5.0000000000000] [5.00000   ]
-    testName   : [5         ] [5.0000000000000] [5.00000   ]
-    testName   : [5         ] [5.0000000000000] [5.00000   ]
+    testName   : [         5] [5.0000000000000] [5.00000   ]
+    testName   : [         5] [5.0000000000000] [5.00000   ]
+    testName   : [         5] [5.0000000000000] [5.00000   ]
 
 
 
@@ -145,19 +145,19 @@ EOF;
 testClass
     Method Name   Iterations   Average Time      Ops/second
     ------------ ------------ ----------------- ------------
-    testName   : [5         ] [5.0000000000000] [5.00000   ]
+    testName   : [         5] [5.0000000000000] [5.00000   ]
 
 
 testClass
     Method Name   Iterations   Average Time      Ops/second
     ------------ ------------ ----------------- ------------
-    testName   : [5         ] [5.0000000000000] [5.00000   ]
+    testName   : [         5] [5.0000000000000] [5.00000   ]
 
 
 testClass
     Method Name   Iterations   Average Time      Ops/second
     ------------ ------------ ----------------- ------------
-    testName   : [5         ] [5.0000000000000] [5.00000   ]
+    testName   : [         5] [5.0000000000000] [5.00000   ]
 
 
 
