@@ -26,32 +26,60 @@ class DefaultFormatter implements FormatterInterface
     {
         $returnString = "\n";
 
+        $header = array(
+            'Method Name',
+            'Iterations',
+            'Average Time',
+            'Ops/second',
+        );
 
         foreach ($results as $result) {
             $returnString .= $result->getClassName() . "\n";
 
-            $longest = 0;
-            /** @var MethodResults $methodResult */
+            // build a table containing the formatted numbers
+            $table = array();
             foreach ($result as $methodResult) {
-                if (strlen($methodResult->methodName) > $longest) {
-                    $longest = strlen($methodResult->methodName);
+                $table[] = array(
+                    $methodResult->methodName,
+                    number_format($methodResult->iterations),
+                    number_format($methodResult->avg, 13),
+                    number_format($methodResult->ops, 5),
+                );
+            }
+
+            // determine column widths for table layout
+            $lengths = array_map('strlen', $header);
+            foreach ($table as $row) {
+                foreach ($row as $name => $value) {
+                    $lengths[$name] = max(strlen($value), $lengths[$name]);
                 }
             }
-            $returnString .= '    ' . str_pad(
-                    'Method Name',
-                    $longest
-                ) . "   Iterations    Average Time      Ops/second\n";
 
-            $returnString .= '    ' . str_repeat('-', $longest) . "  ------------  --------------    -------------\n";
-
-            foreach ($result as $methodResult) {
-
-                $method     = str_pad($methodResult->methodName, $longest);
-                $iterations = str_pad(number_format($methodResult->iterations), 10);
-                $avg        = str_pad(number_format($methodResult->avg, 13), 13);
-                $ops        = str_pad(number_format($methodResult->ops, 5), 7);
-                $returnString .= "    $method: [$iterations] [$avg] [$ops]\n";
+            // format header and table rows
+            $returnString .= sprintf(
+                "    %s   %s   %s   %s\n",
+                str_pad($header[0], $lengths[0]),
+                str_pad($header[1], $lengths[1]),
+                str_pad($header[2], $lengths[2]),
+                str_pad($header[3], $lengths[3])
+            );
+            $returnString .= sprintf(
+                "    %s %s %s %s\n",
+                str_repeat('-', $lengths[0] + 1),
+                str_repeat('-', $lengths[1] + 2),
+                str_repeat('-', $lengths[2] + 2),
+                str_repeat('-', $lengths[3] + 2)
+            );
+            foreach ($table as $row) {
+                $returnString .= sprintf(
+                    "    %s: [%s] [%s] [%s]\n",
+                    str_pad($row[0], $lengths[0]),
+                    str_pad($row[1], $lengths[1]),
+                    str_pad($row[2], $lengths[2]),
+                    str_pad($row[3], $lengths[3])
+                );
             }
+
             $returnString .= "\n\n";
         }
 
