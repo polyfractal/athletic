@@ -53,9 +53,9 @@ class DefaultFormatterTest extends \PHPUnit_Framework_TestCase
         $expected = <<<EOF
 
 testClass
-    Method Name   Iterations    Average Time      Ops/second
-    --------  ------------  --------------    -------------
-    testName: [5         ] [5.0000000000000] [5.00000]
+    Method Name   Iterations   Average Time      Ops/second
+    ------------ ------------ ----------------- ------------
+    testName   : [         5] [5.0000000000000] [5.00000   ]
 
 
 
@@ -97,11 +97,11 @@ EOF;
         $expected = <<<EOF
 
 testClass
-    Method Name   Iterations    Average Time      Ops/second
-    --------  ------------  --------------    -------------
-    testName: [5         ] [5.0000000000000] [5.00000]
-    testName: [5         ] [5.0000000000000] [5.00000]
-    testName: [5         ] [5.0000000000000] [5.00000]
+    Method Name   Iterations   Average Time      Ops/second
+    ------------ ------------ ----------------- ------------
+    testName   : [         5] [5.0000000000000] [5.00000   ]
+    testName   : [         5] [5.0000000000000] [5.00000   ]
+    testName   : [         5] [5.0000000000000] [5.00000   ]
 
 
 
@@ -143,21 +143,21 @@ EOF;
         $expected = <<<EOF
 
 testClass
-    Method Name   Iterations    Average Time      Ops/second
-    --------  ------------  --------------    -------------
-    testName: [5         ] [5.0000000000000] [5.00000]
+    Method Name   Iterations   Average Time      Ops/second
+    ------------ ------------ ----------------- ------------
+    testName   : [         5] [5.0000000000000] [5.00000   ]
 
 
 testClass
-    Method Name   Iterations    Average Time      Ops/second
-    --------  ------------  --------------    -------------
-    testName: [5         ] [5.0000000000000] [5.00000]
+    Method Name   Iterations   Average Time      Ops/second
+    ------------ ------------ ----------------- ------------
+    testName   : [         5] [5.0000000000000] [5.00000   ]
 
 
 testClass
-    Method Name   Iterations    Average Time      Ops/second
-    --------  ------------  --------------    -------------
-    testName: [5         ] [5.0000000000000] [5.00000]
+    Method Name   Iterations   Average Time      Ops/second
+    ------------ ------------ ----------------- ------------
+    testName   : [         5] [5.0000000000000] [5.00000   ]
 
 
 
