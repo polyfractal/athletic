@@ -12,13 +12,13 @@ use Athletic\Common\DICBuilder;
 use Athletic\Common\ErrorHandlerInterface;
 use Athletic\Discovery\RecursiveFileLoader;
 use Athletic\Runners\SuiteRunner;
-use Pimple;
+use Pimple\Container;
 
 /**
  * Class Athletic
  * @package Athletic
  */
-class Athletic extends Pimple
+class Athletic extends Container
 {
     /** @var  DICBuilder */
     private $dicBuilder;

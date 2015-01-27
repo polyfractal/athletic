@@ -13,7 +13,7 @@
     "php": ">=5.3.9",
     "zeptech/annotations": "1.1.*",
     "nategood/commando": "0.2.1",
-    "pimple/pimple": ">=1.0,<3.0"
+    "pimple/pimple": ">=3.0"
   },
   "require-dev": {
     "phpunit/phpunit": "~4.0",
