@@ -5,7 +5,7 @@ Athletic was inspired by the annotation format that PHPUnit uses.  Benchmark tes
 
 | Branch | Unit Tests | Coverage |
 | ------ | ---------- | -------- |
-| [![Latest Stable Version](https://poser.pugx.org/athletic/athletic/v/stable.png)](https://packagist.org/packages/athletic/athletic) | [![Build Status](https://travis-ci.org/polyfractal/athletic.png?branch=master)](https://travis-ci.org/polyfractal/athletic) | [![Coverage Status](https://coveralls.io/repos/polyfractal/athletic/badge.png?branch=master)](https://coveralls.io/r/polyfractal/athletic?branch=master)|
+| [![Latest Stable Version](https://poser.pugx.org/athletic/athletic/v/stable.svg)](https://packagist.org/packages/athletic/athletic) | [![Build Status](https://travis-ci.org/polyfractal/athletic.svg?branch=master)](https://travis-ci.org/polyfractal/athletic) | [![Coverage Status](https://coveralls.io/repos/polyfractal/athletic/badge.svg?branch=master)](https://coveralls.io/r/polyfractal/athletic?branch=master)|
 
 ### Why Benchmark?
 Because fast code is good!  While *premature* optimization is certainly evil, optimization is always an important component of software development.  And sometimes you just really need to see if one solution to a problem is faster than an alternative.
