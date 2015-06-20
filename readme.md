@@ -194,7 +194,7 @@ Athletic offers several methods to setup and tear down data/variables.
 | Method | Description |
 | ------ | ----------- |
 | classSetUp() | Invoked at the beginning of the Event before anything else has occurred |
-| setUp() | Invoked once before each iteration of the method being benchmark.|
+| setUp() | Invoked once before each iteration of the method being benchmarked.|
 | classTearDown() | Invoked at the end of the event after everything else has occurred.|
 | tearDown() | Invoked after each iteration of a benchmark has completed.|
 
@@ -207,3 +207,20 @@ If the goal, however, is to benchmark the entire process (initial calculation an
 ### Calibration
 
 Athletic uses Reflection and variable functions to invoke the methods in your Event.  Because there is some internal overhead to variable functions, Athletic performs a "calibration" step before each iteration.  This step calls an empty calibration method and times how long it takes.  This time is then subtracted from the iterations total time, providing a more accurate total time.
+
+### Pause Benchmarks
+
+Benchmarks can be paused within the benchmarking methods by calling `$this->pause()`. Execution time of code following a pause call will not affect the benchmark result. Calling `$this->resume()` will resume the benchmark.
+
+```php
+/**
+ * @iterations 1000
+ */
+public function fastIndexingAlgo()
+{
+    $this->pause();
+    $indexer = new Indexing\FastIndexer();
+    $this->resume();
+    $indexer->index($this->data);
+}
+```
