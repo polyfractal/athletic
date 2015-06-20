@@ -174,7 +174,6 @@ abstract class AthleticEvent
                 . "resume() call expected before next pause");
         }
         $this->pauseStart = microtime(true);
-        return $this;
     }
 
 
@@ -191,7 +190,6 @@ abstract class AthleticEvent
         $pauseStart = $this->pauseStart;
         $this->pauseStart = null;
         $this->pauseTimes[] = microtime(true) - $pauseStart;
-        return $this;
     }
 
 
