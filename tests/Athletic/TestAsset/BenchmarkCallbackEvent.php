@@ -23,7 +23,7 @@ class BenchmarkCallbackEvent extends AthleticEvent
     {
         // Have to put this in an array or AthleticEvent will recognize it as an actual benchmark.
         // That might be no problem but make sure and invoke callback in a more controlled fashion.
-        $this->benchmarkCode = [$benchmarkCode];
+        $this->benchmarkCode = array($benchmarkCode);
     }
 
     /**
