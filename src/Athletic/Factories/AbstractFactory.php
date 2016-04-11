@@ -7,21 +7,18 @@
 
 namespace Athletic\Factories;
 
-
-use Pimple;
-
 /**
  * Class AbstractFactory
  * @package Athletic\Factories
  */
 abstract class AbstractFactory
 {
-    /** @var  Pimple */
+    /** @var  \Pimple\Container */
     protected $container;
 
 
     /**
-     * @param Pimple $container
+     * @param \Pimple\Container $container
      */
     public function __construct($container)
     {
