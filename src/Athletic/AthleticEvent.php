@@ -11,6 +11,7 @@ use Athletic\Factories\MethodResultsFactory;
 use Athletic\Results\MethodResults;
 use ReflectionClass;
 use zpt\anno\Annotations;
+use LogicException;
 
 /**
  * Class AthleticEvent
@@ -18,8 +19,17 @@ use zpt\anno\Annotations;
  */
 abstract class AthleticEvent
 {
-    /** @var  MethodResultsFactory */
+    /** @var MethodResultsFactory */
     private $methodResultsFactory;
+
+    /** @var string|null */
+    private $timeMethodCurrentMethod;
+
+    /** @var float|null */
+    private $pauseStart = null;
+
+    /** @var float[] */
+    private $pauseTimes;
 
 
     public function __construct()
@@ -128,15 +138,58 @@ abstract class AthleticEvent
 
 
     /**
+	 * @todo Move timer into separate class.
+	 *
      * @param string $method
      *
      * @return mixed
      */
     private function timeMethod($method)
     {
+        $this->pauseTimes = array();
+        $this->timeMethodCurrentMethod = $method;
+
         $start = microtime(true);
         $this->$method();
-        return microtime(true) - $start;
+        $endTime = microtime(true);
+
+        if( $this->pauseStart !== null ) {
+            throw new LogicException("[$method] resume() has not been called after pause()");
+        }
+
+        $this->timeMethodCurrentMethod = null;
+        return $endTime - $start - array_sum( $this->pauseTimes );
+    }
+
+
+    /**
+     * Allows to pause a benchmark. Time elapsed for code invoked between pause() and subsequent
+     * resume() call will not be part of the benchmark result.
+     *
+     * @return $this
+     */
+    public function pause() {
+        if( $this->pauseStart !== null ) {
+            throw new LogicException( "[{$this->timeMethodCurrentMethod}] pause() still active, "
+                . "resume() call expected before next pause");
+        }
+        $this->pauseStart = microtime(true);
+    }
+
+
+    /**
+     * Resumes the benchmark after a pause() call.
+     *
+     * @return $this
+     */
+    public function resume() {
+        if( $this->pauseStart === null ) {
+            throw new LogicException("[{$this->timeMethodCurrentMethod}] can not resume() a "
+                . " benchmark before initiating pause()");
+        }
+        $pauseStart = $this->pauseStart;
+        $this->pauseStart = null;
+        $this->pauseTimes[] = microtime(true) - $pauseStart;
     }
 
 
