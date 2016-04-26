@@ -18,6 +18,14 @@ use zpt\anno\Annotations;
  */
 abstract class AthleticEvent
 {
+
+    /**
+     * The maximal number of iterations that is used for calibration.
+     *
+     * @var integer
+     */
+    const MAX_CALIBRATION_ITERATIONS = 1000;
+
     /** @var  MethodResultsFactory */
     private $methodResultsFactory;
 
@@ -92,7 +100,7 @@ abstract class AthleticEvent
         $results = array();
 
         foreach ($methods as $methodName => $annotations) {
-            if (isset($annotations['iterations']) === true) {
+            if (isset($annotations['iterations']) || isset($annotations['maxRuntime'])) {
                 $results[] = $this->runMethodBenchmark($methodName, $annotations);
             }
         }
@@ -102,23 +110,28 @@ abstract class AthleticEvent
 
     /**
      * @param string $method
-     * @param int    $annotations
+     * @param Annotations $annotations
      *
      * @return MethodResults
      */
     private function runMethodBenchmark($method, $annotations)
     {
-        $iterations = $annotations['iterations'];
-        $avgCalibration = $this->getCalibrationTime($iterations);
+        $iterations = isset($annotations['iterations']) ? $annotations['iterations'] : PHP_INT_MAX;
+        $maxRuntime = isset($annotations['maxRuntime']) ? $annotations['maxRuntime'] : PHP_INT_MAX;
+        $avgCalibration = $this->getCalibrationTime(min($iterations, static::MAX_CALIBRATION_ITERATIONS));
 
+        $start = microtime(true);
         $results = array();
         for ($i = 0; $i < $iterations; ++$i) {
             $this->setUp();
             $results[$i] = $this->timeMethod($method) - $avgCalibration;
             $this->tearDown();
+            if ((microtime(true) - $start) >= $maxRuntime) {
+                break;
+            }
         }
 
-        $finalResults = $this->methodResultsFactory->create($method, $results, $iterations);
+        $finalResults = $this->methodResultsFactory->create($method, $results, count($results));
 
         $this->setOptionalAnnotations($finalResults, $annotations);
 
