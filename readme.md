@@ -5,7 +5,7 @@ Athletic was inspired by the annotation format that PHPUnit uses.  Benchmark tes
 
 | Branch | Unit Tests | Coverage |
 | ------ | ---------- | -------- |
-| [![Latest Stable Version](https://poser.pugx.org/athletic/athletic/v/stable.png)](https://packagist.org/packages/athletic/athletic) | [![Build Status](https://travis-ci.org/polyfractal/athletic.png?branch=master)](https://travis-ci.org/polyfractal/athletic) | [![Coverage Status](https://coveralls.io/repos/polyfractal/athletic/badge.png?branch=master)](https://coveralls.io/r/polyfractal/athletic?branch=master)|
+| [![Latest Stable Version](https://poser.pugx.org/athletic/athletic/v/stable.svg)](https://packagist.org/packages/athletic/athletic) | [![Build Status](https://travis-ci.org/polyfractal/athletic.svg?branch=master)](https://travis-ci.org/polyfractal/athletic) | [![Coverage Status](https://coveralls.io/repos/polyfractal/athletic/badge.svg?branch=master)](https://coveralls.io/r/polyfractal/athletic?branch=master)|
 
 # WARNING: No longer maintained
 Athletic is not currently being maintained, so it may have bugs or other problems.  I would recommend using [PhpBench](https://github.com/phpbench/phpbench), which was inspired by Athletic.  It is far more capable, and actively maintained
