@@ -32,14 +32,10 @@ Without Athletic, you have to litter your code with microtime() calls and build 
 xDebug is an excellent profiling tool, but it is not a benchmarking tool.  xdebug (and by extension, cachegrind) will show you what is fast/slow inside your method, and is indispensable for actually optimizing your code.  But it is not useful for running 1000 iterations of a particular function and determining average execution time.
 
 ## Quick Installation via Composer
-You can easily install Athletic through [Composer](http://getcomposer.org) in two steps:
+You can easily install Athletic through [Composer](http://getcomposer.org):
 
 ```bash
-# Install Composer
-curl -sS https://getcomposer.org/installer | php
-
-# Add Athletic as a dev dependency
-php composer.phar require athletic/athletic:~0.1 --dev
+composer require athletic/athletic --dev
 ```
 
 You can find out more on how to install Composer, configure autoloading, and other best-practices for defining dependencies at [getcomposer.org](http://getcomposer.org).
